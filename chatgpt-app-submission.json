@@ -1,0 +1,104 @@
+{
+  "$schema": "https://developers.openai.com/apps-sdk/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "ClaimGPT",
+    "subtitle": "Insurance claim triage",
+    "description": "ClaimGPT helps insurance teams analyze claim intake narratives, identify missing information, surface escalation or fraud-review signals, and render an adjuster-ready triage workspace inside ChatGPT.",
+    "category": "BUSINESS"
+  },
+  "tools": {
+    "analyze_claim": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only analyzes the provided claim narrative and returns structured triage results without creating or updating any records.",
+        "open_world_justification": "Does not publish content or send data to external third-party systems beyond returning the analysis result to ChatGPT.",
+        "destructive_justification": "Does not delete, overwrite, revoke, or perform any irreversible action."
+      }
+    },
+    "render_claim_workspace": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only formats previously analyzed claim data into a widget-ready workspace and does not modify claim records or external systems.",
+        "open_world_justification": "Does not publish, send, or update data in any external or public system.",
+        "destructive_justification": "Does not remove data or trigger irreversible actions because it only renders the workspace response."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "Analyze a property damage intake and identify missing documentation.",
+      "user_prompt": "Triage this property damage claim and tell me what documentation is missing.",
+      "file_attachment_urls": null,
+      "tools_triggered": "analyze_claim",
+      "expected_output": "Returns structured property-claim triage details with likely missing information and relevant next steps.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Review a bodily injury narrative for escalation need.",
+      "user_prompt": "Analyze this bodily injury claim narrative and tell me if it needs adjuster escalation.",
+      "file_attachment_urls": null,
+      "tools_triggered": "analyze_claim",
+      "expected_output": "Returns elevated severity when injury details justify it and recommends appropriate review or escalation steps.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Render the full ClaimGPT workspace from claim analysis results.",
+      "user_prompt": "Show me the ClaimGPT workspace for this claim and summarize next steps for the adjuster.",
+      "file_attachment_urls": null,
+      "tools_triggered": "render_claim_workspace",
+      "expected_output": "Loads the ClaimGPT widget with severity, status, confidence, recommended actions, and missing-information sections.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Evaluate a theft claim with no supporting evidence.",
+      "user_prompt": "Use ClaimGPT to review a short theft claim narrative with no supporting evidence.",
+      "file_attachment_urls": null,
+      "tools_triggered": "analyze_claim",
+      "expected_output": "Flags the lack of supporting evidence, recommends verification steps, and keeps the workflow read-only.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Surface fraud-review signals from an inconsistent payout request.",
+      "user_prompt": "What are the next steps for this claim if the story appears inconsistent and the claimant wants an immediate payout?",
+      "file_attachment_urls": null,
+      "tools_triggered": "analyze_claim",
+      "expected_output": "Highlights fraud or escalation signals and recommends validation-focused next steps instead of payout action.",
+      "expected_output_url": null
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "Do not trigger for unrelated calendar planning.",
+      "user_prompt": "What meetings do I have tomorrow afternoon?",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because calendar scheduling is outside the supported claims workflow.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not trigger for generic insurance education without claim triage intent.",
+      "user_prompt": "Explain how deductibles work in homeowners insurance.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because the request is general insurance education rather than a claim-review workflow.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not trigger for unrelated travel planning.",
+      "user_prompt": "Find me a hotel in San Diego next weekend.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because travel planning is outside the app's supported use cases.",
+      "expected_output_url": null
+    }
+  ]
+}

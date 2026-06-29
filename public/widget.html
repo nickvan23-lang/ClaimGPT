@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClaimGPT</title>
+    <style>
+      :root {
+        --bg: #f3efe7;
+        --panel: rgba(255, 252, 246, 0.9);
+        --ink: #1d2433;
+        --muted: #5e6678;
+        --line: rgba(29, 36, 51, 0.1);
+        --accent: #a5441d;
+        --accent-dark: #7d3415;
+        --card: #fffdf9;
+        --warn: #b86a00;
+        --danger: #b22828;
+        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+        color: var(--ink);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 16px;
+        background:
+          radial-gradient(circle at top left, rgba(165, 68, 29, 0.16), transparent 34%),
+          linear-gradient(180deg, #f7f2ea 0%, #efe7db 100%);
+      }
+
+      main {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 22px;
+        border-radius: 24px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: 0 20px 44px rgba(58, 43, 24, 0.12);
+        backdrop-filter: blur(10px);
+      }
+
+      .stack {
+        display: grid;
+        gap: 16px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+      }
+
+      .eyebrow {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .subhead {
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .summary {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(165, 68, 29, 0.08), rgba(255, 255, 255, 0.75));
+        border: 1px solid rgba(165, 68, 29, 0.12);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 14px;
+        border-radius: 16px;
+        background: var(--card);
+        border: 1px solid var(--line);
+      }
+
+      .stat-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .stat-value {
+        font-size: 21px;
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 14px;
+      }
+
+      .panel {
+        padding: 16px;
+        border-radius: 18px;
+        background: var(--card);
+        border: 1px solid var(--line);
+      }
+
+      .panel h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 8px;
+      }
+
+      li {
+        line-height: 1.45;
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+      }
+
+      .badge.severity-low,
+      .badge.status-triage {
+        color: #22543d;
+        background: #ecfdf3;
+        border-color: #b7e8c9;
+      }
+
+      .badge.severity-moderate,
+      .badge.status-awaiting-docs {
+        color: var(--warn);
+        background: #fff7e8;
+        border-color: #f0d29f;
+      }
+
+      .badge.severity-high,
+      .badge.status-ready-for-adjuster {
+        color: var(--danger);
+        background: #fff0f0;
+        border-color: #efb0b0;
+      }
+
+      .badge.status-new {
+        color: #37507a;
+        background: #eef5ff;
+        border-color: #bacef0;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 16px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .secondary {
+        background: #201f24;
+        color: #fff;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 720px) {
+        h1 {
+          font-size: 28px;
+        }
+
+        .stats,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stack">
+      <section class="hero">
+        <p class="eyebrow">Claim intake workspace</p>
+        <h1 id="headline">ClaimGPT</h1>
+        <p class="subhead" id="subhead">AI-assisted claim triage workspace</p>
+      </section>
+
+      <section class="summary">
+        <p id="summary">
+          Run `analyze_claim`, then `render_claim_workspace` to populate this claim triage dashboard.
+        </p>
+      </section>
+
+      <section class="stats">
+        <div class="stat">
+          <span class="stat-label">Claim Type</span>
+          <strong class="stat-value" id="claim-type">Pending</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Severity</span>
+          <strong class="stat-value" id="severity">Pending</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Confidence</span>
+          <strong class="stat-value" id="confidence">0%</strong>
+        </div>
+      </section>
+
+      <section class="badge-row">
+        <span class="badge status-new" id="status-badge">New</span>
+        <span class="badge severity-low" id="severity-badge">Low severity</span>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Recommended Actions</h2>
+          <ul id="recommended-actions">
+            <li>No actions yet.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>Missing Information</h2>
+          <ul id="missing-information">
+            <li>No missing information yet.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h2>Fraud / Escalation Signals</h2>
+        <ul id="fraud-signals">
+          <li>No fraud signals yet.</li>
+        </ul>
+      </section>
+
+      <section class="actions">
+        <button class="primary" id="sample-claim-button" type="button">
+          Run Sample Claim Review
+        </button>
+        <button class="secondary" id="follow-up-button" type="button">
+          Ask ChatGPT For Next Steps
+        </button>
+      </section>
+
+      <p class="meta" id="meta">
+        Runtime: waiting for MCP Apps bridge initialization.
+      </p>
+    </main>
+
+    <script type="module">
+      const headlineEl = document.querySelector("#headline");
+      const subheadEl = document.querySelector("#subhead");
+      const summaryEl = document.querySelector("#summary");
+      const claimTypeEl = document.querySelector("#claim-type");
+      const severityEl = document.querySelector("#severity");
+      const confidenceEl = document.querySelector("#confidence");
+      const statusBadgeEl = document.querySelector("#status-badge");
+      const severityBadgeEl = document.querySelector("#severity-badge");
+      const recommendedActionsEl = document.querySelector("#recommended-actions");
+      const missingInformationEl = document.querySelector("#missing-information");
+      const fraudSignalsEl = document.querySelector("#fraud-signals");
+      const sampleClaimButtonEl = document.querySelector("#sample-claim-button");
+      const followUpButtonEl = document.querySelector("#follow-up-button");
+      const metaEl = document.querySelector("#meta");
+
+      let toolOutput = null;
+      let rpcId = 0;
+      const pendingRequests = new Map();
+
+      const setList = (element, items, emptyText) => {
+        element.innerHTML = "";
+        const source = items && items.length ? items : [emptyText];
+
+        source.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          element.appendChild(li);
+        });
+      };
+
+      const render = () => {
+        const output = toolOutput ?? {};
+        headlineEl.textContent = output.headline ?? "ClaimGPT";
+        subheadEl.textContent = output.subhead ?? "AI-assisted claim triage workspace";
+        summaryEl.textContent =
+          output.summary ??
+          "Run analyze_claim, then render_claim_workspace to populate this claim triage dashboard.";
+        claimTypeEl.textContent = output.claimType ?? "Pending";
+        severityEl.textContent = output.severity ?? "Pending";
+        confidenceEl.textContent = output.confidence
+          ? Math.round(output.confidence * 100) + "%"
+          : "0%";
+
+        const status = output.status ?? "new";
+        const severity = output.severity ?? "low";
+
+        statusBadgeEl.textContent = status.replaceAll("-", " ");
+        statusBadgeEl.className = "badge status-" + status;
+
+        severityBadgeEl.textContent = severity + " severity";
+        severityBadgeEl.className = "badge severity-" + severity;
+
+        setList(
+          recommendedActionsEl,
+          output.recommendedActions,
+          "No recommendations yet."
+        );
+        setList(
+          missingInformationEl,
+          output.missingInformation,
+          "No missing information flagged."
+        );
+        setList(fraudSignalsEl, output.fraudSignals, "No fraud signals detected.");
+
+        const theme = window.openai?.theme ?? "bridge-only";
+        metaEl.textContent =
+          "Runtime: " +
+          (window.openai ? "MCP Apps bridge + optional window.openai" : "MCP Apps bridge only") +
+          " | Theme: " +
+          theme;
+      };
+
+      const rpcNotify = (method, params) => {
+        window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
+      };
+
+      const rpcRequest = (method, params) =>
+        new Promise((resolve, reject) => {
+          const id = ++rpcId;
+          pendingRequests.set(id, { resolve, reject });
+          window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
+        });
+
+      window.addEventListener(
+        "message",
+        (event) => {
+          if (event.source !== window.parent) {
+            return;
+          }
+
+          const message = event.data;
+          if (!message || message.jsonrpc !== "2.0") {
+            return;
+          }
+
+          if (typeof message.id === "number") {
+            const pending = pendingRequests.get(message.id);
+            if (!pending) {
+              return;
+            }
+
+            pendingRequests.delete(message.id);
+            if (message.error) {
+              pending.reject(message.error);
+              return;
+            }
+
+            pending.resolve(message.result);
+            return;
+          }
+
+          if (message.method === "ui/notifications/tool-result") {
+            toolOutput = message.params?.structuredContent ?? null;
+            render();
+          }
+        },
+        { passive: true }
+      );
+
+      const initializeBridge = async () => {
+        await rpcRequest("ui/initialize", {
+          appInfo: { name: "claimgpt-widget", version: "0.1.0" },
+          appCapabilities: {},
+          protocolVersion: "2026-01-26",
+        });
+        rpcNotify("ui/notifications/initialized", {});
+      };
+
+      const bridgeReady = initializeBridge();
+
+      sampleClaimButtonEl.addEventListener("click", async () => {
+        await bridgeReady;
+
+        const analysis = await rpcRequest("tools/call", {
+          name: "analyze_claim",
+          arguments: {
+            claimType: "property",
+            narrative:
+              "Water leak discovered on 06/17/2026 in the kitchen after the homeowner returned from travel. Cabinets are damaged and mitigation has started, but the claimant has not yet provided photos or the plumber invoice.",
+            evidenceCount: 1,
+          },
+        });
+
+        const rendered = await rpcRequest("tools/call", {
+          name: "render_claim_workspace",
+          arguments: analysis.structuredContent,
+        });
+
+        toolOutput = rendered?.structuredContent ?? toolOutput;
+        render();
+      });
+
+      followUpButtonEl.addEventListener("click", async () => {
+        await bridgeReady;
+
+        const prompt = toolOutput?.claimType
+          ? "Suggest the next adjuster actions for this " +
+            toolOutput.claimType +
+            " claim based on the current ClaimGPT workspace."
+          : "Explain how ClaimGPT should be used during claim intake.";
+
+        rpcNotify("ui/message", {
+          role: "user",
+          content: [{ type: "text", text: prompt }],
+        });
+      });
+
+      render();
+    </script>
+  </body>
+</html>

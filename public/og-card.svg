@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="ClaimGPT social preview">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#faf5ee" />
+      <stop offset="100%" stop-color="#e9d9c7" />
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#bb5624" />
+      <stop offset="100%" stop-color="#7d3415" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="175" cy="120" r="180" fill="#d9854a" fill-opacity="0.18" />
+  <rect x="80" y="84" width="1040" height="462" rx="36" fill="#fffdf9" stroke="#e6d6c4" />
+  <rect x="120" y="126" width="360" height="378" rx="28" fill="url(#card)" />
+  <text x="162" y="246" font-family="Georgia, serif" font-size="116" font-weight="700" fill="#fff9f1">Claim</text>
+  <text x="162" y="338" font-family="Georgia, serif" font-size="116" font-weight="700" fill="#fff9f1">GPT</text>
+  <text x="162" y="414" font-family="Georgia, serif" font-size="34" fill="#f7dfcb">Insurance claim triage</text>
+  <text x="540" y="206" font-family="Georgia, serif" font-size="58" font-weight="700" fill="#1d2433">
+    AI-assisted claim review
+  </text>
+  <text x="540" y="278" font-family="Georgia, serif" font-size="34" fill="#5e6678">
+    Turn intake narratives into structured next steps,
+  </text>
+  <text x="540" y="324" font-family="Georgia, serif" font-size="34" fill="#5e6678">
+    missing-document flags, and adjuster-ready summaries.
+  </text>
+  <rect x="540" y="388" width="204" height="56" rx="28" fill="#a5441d" />
+  <text x="583" y="425" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#fff9f1">
+    ClaimGPT
+  </text>
+</svg>

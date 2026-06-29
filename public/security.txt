@@ -1,0 +1,4 @@
+Contact: support@example.com
+Preferred-Languages: en
+Canonical: /
+Policy: /privacy

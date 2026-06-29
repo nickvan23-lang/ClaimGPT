@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: claimgpt
+    runtime: docker
+    plan: starter
+    autoDeploy: true
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8787"
+      - key: CLAIMGPT_PUBLIC_DOMAIN
+        sync: false
+      - key: CLAIMGPT_SUPPORT_EMAIL
+        sync: false
+      - key: CLAIMGPT_COMPANY_NAME
+        sync: false
+      - key: CLAIMGPT_PRIVACY_URL
+        sync: false
+      - key: CLAIMGPT_SUPPORT_URL
+        sync: false

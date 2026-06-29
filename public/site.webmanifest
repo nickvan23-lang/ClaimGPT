@@ -1,0 +1,17 @@
+{
+  "name": "ClaimGPT",
+  "short_name": "ClaimGPT",
+  "description": "AI-assisted insurance claim triage for faster intake decisions and clearer adjuster handoff.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf5ee",
+  "theme_color": "#a5441d",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
