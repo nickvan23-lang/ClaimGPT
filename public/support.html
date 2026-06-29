@@ -1,43 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ClaimGPT Support</title>
     <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f7fb;
+        --panel: #ffffff;
+        --text: #162033;
+        --muted: #5d6980;
+        --line: #d8deea;
+        --accent: #0f62fe;
+        --accent-soft: #ecf3ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
-        padding: 40px 20px;
-        font-family: Georgia, "Times New Roman", serif;
-        background: #f7f3ec;
-        color: #1f2430;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 68%);
+        color: var(--text);
       }
 
       main {
-        max-width: 760px;
+        max-width: 860px;
         margin: 0 auto;
-        background: #fffdf9;
-        border: 1px solid #e9dfd2;
-        border-radius: 18px;
+        padding: 48px 20px 80px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
         padding: 32px;
+        box-shadow: 0 18px 48px rgba(22, 32, 51, 0.08);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      h1,
+      h2 {
+        line-height: 1.2;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+      }
+
+      h2 {
+        margin: 28px 0 10px;
+        font-size: 1.15rem;
+      }
+
+      p,
+      li {
+        color: var(--muted);
         line-height: 1.6;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .meta {
+        margin: 0 0 24px;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      .panel {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fbfcff;
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>ClaimGPT Support</h1>
-      <p>
-        This draft support page exists for public-launch preparation. Replace the placeholders below before you submit ClaimGPT for review.
-      </p>
-      <ul>
-        <li>Support email: <strong>support@claim-gpt.com</strong></li>
-        <li>Support hours: <strong>[support hours and timezone]</strong></li>
-        <li>Incident response page: <strong>[status page URL if applicable]</strong></li>
-      </ul>
-      <p>
-        For app-review readiness, the support contact published here should match the support details you enter in the OpenAI Platform submission form.
-      </p>
+      <section class="card">
+        <div class="eyebrow">ClaimGPT</div>
+        <h1>Support</h1>
+        <p class="meta">
+          Questions about access, product behavior, deployment readiness, or
+          operational use can be sent to
+          <a href="mailto:support@claim-gpt.com">support@claim-gpt.com</a>.
+        </p>
+
+        <div class="grid">
+          <div class="panel">
+            <h2>Primary Contact</h2>
+            <p>
+              Email:
+              <a href="mailto:support@claim-gpt.com">support@claim-gpt.com</a>
+            </p>
+            <p>Company: ClaimGPT</p>
+            <p>Public domain: <a href="https://claim-gpt.com">claim-gpt.com</a></p>
+          </div>
+
+          <div class="panel">
+            <h2>Expected Response Window</h2>
+            <p>
+              We aim to respond to new support requests within 2 business days.
+              Higher-priority production-impacting issues are reviewed as
+              quickly as possible during normal business operations.
+            </p>
+          </div>
+        </div>
+
+        <h2>What To Include In A Support Request</h2>
+        <ul>
+          <li>Your name, organization, and best reply email.</li>
+          <li>A short description of the issue or request.</li>
+          <li>The relevant URL, screen, or workflow involved.</li>
+          <li>Any error message, timestamp, or reproduction steps you have.</li>
+          <li>
+            Whether the issue affects evaluation, deployment, onboarding, or a
+            live operational workflow.
+          </li>
+        </ul>
+
+        <h2>Best Fit For Support</h2>
+        <ul>
+          <li>Access and onboarding questions.</li>
+          <li>Product behavior and triage-output questions.</li>
+          <li>Deployment and domain verification issues.</li>
+          <li>OpenAI app review preparation and public metadata updates.</li>
+          <li>Bug reports, reliability issues, and unexpected responses.</li>
+        </ul>
+
+        <h2>Security And Privacy Questions</h2>
+        <p>
+          If your request involves privacy, security, or sensitive operational
+          concerns, include that in the email subject line so it can be routed
+          appropriately. For general privacy information, visit
+          <a href="/privacy">the Privacy Policy</a>.
+        </p>
+
+        <h2>Service Status</h2>
+        <p>
+          Public service health information is available at
+          <a href="/status">/status</a> and <a href="/healthz">/healthz</a>.
+        </p>
+      </section>
     </main>
   </body>
 </html>

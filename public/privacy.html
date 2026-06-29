@@ -1,26 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ClaimGPT Privacy Policy</title>
     <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --text: #162033;
+        --muted: #5d6980;
+        --line: #d8deea;
+        --accent: #0f62fe;
+        --accent-soft: #eaf1ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
-        padding: 40px 20px;
-        font-family: Georgia, "Times New Roman", serif;
-        background: #f7f3ec;
-        color: #1f2430;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.6;
       }
 
       main {
-        max-width: 900px;
+        max-width: 860px;
         margin: 0 auto;
-        background: #fffdf9;
-        border: 1px solid #e9dfd2;
-        border-radius: 18px;
+        padding: 48px 20px 80px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
         padding: 32px;
-        line-height: 1.6;
+        box-shadow: 0 18px 48px rgba(22, 32, 51, 0.08);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
       }
 
       h1,
@@ -28,72 +59,172 @@
         line-height: 1.2;
       }
 
-      code {
-        background: #f3ece4;
-        padding: 2px 6px;
-        border-radius: 6px;
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+      }
+
+      h2 {
+        margin-top: 34px;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .meta {
+        margin: 0 0 24px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .notice {
+        margin-top: 24px;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfcfe;
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>ClaimGPT Privacy Policy</h1>
-      <p>Last updated: June 29, 2026</p>
-      <p>
-        This draft privacy policy is included so ClaimGPT has the required public artifact for app-review preparation.
-        Replace bracketed placeholders with your legal entity, final contact details, and real data-retention windows before submission.
-      </p>
+      <section class="card">
+        <div class="eyebrow">ClaimGPT</div>
+        <h1>Privacy Policy</h1>
+        <p class="meta">Last updated: June 29, 2026</p>
 
-      <h2>1. Who We Are</h2>
-      <p>
-        ClaimGPT is operated by <strong>[Legal Company Name]</strong>. You can contact us at
-        <strong>support@claim-gpt.com</strong> for privacy or support questions.
-      </p>
+        <p>
+          ClaimGPT provides AI-assisted claim intake and triage support. This
+          Privacy Policy explains what information we collect, how we use it,
+          and the choices available to users, customers, and site visitors.
+        </p>
 
-      <h2>2. Categories of Data We Process</h2>
-      <p>ClaimGPT is designed to minimize data collection. Depending on the workflow, we may process:</p>
-      <ul>
-        <li>Claim narrative text that a user intentionally submits for triage.</li>
-        <li>Claim category metadata such as claim type and evidence count.</li>
-        <li>Operational logs necessary to secure and maintain the service, such as request timing and error details.</li>
-      </ul>
+        <h2>Information We Collect</h2>
+        <p>We may collect the following categories of information:</p>
+        <ul>
+          <li>Contact information, such as name, company, and email address.</li>
+          <li>
+            Claim-related content submitted for review, such as narratives,
+            supporting details, and structured intake information.
+          </li>
+          <li>
+            Technical and usage data, including device, browser, request, and
+            log information needed to operate and secure the service.
+          </li>
+          <li>
+            Communications you send to us, including support requests and
+            operational feedback.
+          </li>
+        </ul>
 
-      <h2>3. Restricted Data</h2>
-      <p>
-        ClaimGPT should <strong>not</strong> be used to submit PCI data, government identifiers, passwords, MFA codes, or protected health information unless and until you have separately implemented compliant handling, legal review, and explicit disclosures.
-      </p>
+        <h2>How We Use Information</h2>
+        <ul>
+          <li>To provide, maintain, and improve ClaimGPT.</li>
+          <li>
+            To generate structured claim-triage outputs, summaries, and
+            operational recommendations.
+          </li>
+          <li>To respond to support requests and communicate with users.</li>
+          <li>To monitor reliability, diagnose issues, and prevent misuse.</li>
+          <li>To comply with legal, regulatory, and contractual obligations.</li>
+        </ul>
 
-      <h2>4. Purposes of Use</h2>
-      <ul>
-        <li>Analyze and triage insurance claim narratives.</li>
-        <li>Generate structured recommendations about missing information and next steps.</li>
-        <li>Maintain application security, reliability, and abuse prevention.</li>
-      </ul>
+        <h2>How Claim Data Is Handled</h2>
+        <p>
+          ClaimGPT is designed to help teams review and organize intake
+          information. Outputs are intended to support human decision-making,
+          not replace professional claim handling, legal review, or compliance
+          workflows.
+        </p>
+        <p>
+          ClaimGPT is currently positioned as a read-only triage assistant. It
+          does not advertise automatic downstream claim updates, payment
+          actions, or insurer system mutations through the public experience.
+        </p>
 
-      <h2>5. Recipients</h2>
-      <p>
-        Data may be disclosed to infrastructure providers, logging/observability vendors, and internal personnel who need access to operate the service. Replace this section with your actual vendor categories before launch.
-      </p>
+        <h2>Sharing of Information</h2>
+        <p>We may share information in limited circumstances:</p>
+        <ul>
+          <li>
+            With infrastructure, hosting, and service providers that help us
+            operate ClaimGPT.
+          </li>
+          <li>
+            When required by law, regulation, court order, or other valid legal
+            process.
+          </li>
+          <li>
+            To protect the rights, safety, security, or integrity of ClaimGPT,
+            our users, or the public.
+          </li>
+          <li>
+            In connection with a merger, acquisition, financing, or asset sale,
+            subject to appropriate confidentiality safeguards.
+          </li>
+        </ul>
 
-      <h2>6. Retention</h2>
-      <p>
-        Replace this section with concrete retention periods. Example: claim-triage request payloads retained for <code>30 days</code>, production error logs retained for <code>14 days</code>, and aggregated metrics retained for <code>12 months</code>.
-      </p>
+        <h2>Data Retention</h2>
+        <p>
+          We retain information for as long as reasonably necessary to provide
+          the service, maintain security and auditability, meet legal
+          obligations, resolve disputes, and enforce our agreements.
+        </p>
 
-      <h2>7. User Controls</h2>
-      <p>
-        Users may request support or deletion assistance through the support contact published for ClaimGPT. If you support authenticated accounts, describe account-level export or deletion controls here.
-      </p>
+        <h2>Security</h2>
+        <p>
+          We use reasonable administrative, technical, and organizational
+          safeguards designed to protect information against unauthorized
+          access, loss, misuse, or disclosure. No method of transmission or
+          storage is completely secure, so we cannot guarantee absolute
+          security.
+        </p>
 
-      <h2>8. International Transfers</h2>
-      <p>
-        If data is processed outside the user's jurisdiction, describe the applicable transfer mechanisms and safeguards here.
-      </p>
+        <h2>Your Choices</h2>
+        <p>
+          Depending on your relationship with ClaimGPT and applicable law, you
+          may request access, correction, deletion, or additional information
+          about your data. You may also contact us to update your account or
+          communication preferences.
+        </p>
 
-      <h2>9. Changes</h2>
-      <p>
-        We may update this policy from time to time. Material changes should be reflected by updating the effective date above and, where required, providing additional notice.
-      </p>
+        <h2>Children's Privacy</h2>
+        <p>
+          ClaimGPT is not directed to children under 13, and we do not
+          knowingly collect personal information from children under 13 through
+          the public service.
+        </p>
+
+        <h2>Changes to This Policy</h2>
+        <p>
+          We may update this Privacy Policy from time to time. If we make
+          material changes, we will update the effective date above and, when
+          appropriate, provide additional notice.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          For privacy questions or requests, contact
+          <a href="mailto:support@claim-gpt.com">support@claim-gpt.com</a>.
+        </p>
+
+        <div class="notice">
+          <strong>Important:</strong> If you plan to use ClaimGPT in a regulated
+          production workflow, this policy should be reviewed by your legal and
+          compliance team before public launch.
+        </div>
+      </section>
     </main>
   </body>
 </html>
