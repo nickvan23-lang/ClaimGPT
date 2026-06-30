@@ -27,6 +27,8 @@ const APP_DOMAIN = process.env.CLAIMGPT_PUBLIC_DOMAIN ?? "https://claim-gpt.com"
 const SUPPORT_EMAIL = process.env.CLAIMGPT_SUPPORT_EMAIL ?? "support@claim-gpt.com";
 const SUPPORT_URL = process.env.CLAIMGPT_SUPPORT_URL ?? `${APP_DOMAIN}/support`;
 const PRIVACY_URL = process.env.CLAIMGPT_PRIVACY_URL ?? `${APP_DOMAIN}/privacy`;
+const OPENAI_APPS_CHALLENGE_TOKEN =
+  process.env.OPENAI_APPS_CHALLENGE_TOKEN ?? "0K_llmmXaQhaRNLdZhB7915noSoUoNn6GhMk9zqa6eA";
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -352,6 +354,13 @@ createServer(async (req, res) => {
 
   if (req.method === "GET" && url.pathname === "/security.txt") {
     res.writeHead(200, { "content-type": "text/plain; charset=utf-8" }).end(SECURITY_TXT);
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/.well-known/openai-apps-challenge") {
+    res.writeHead(200, { "content-type": "text/plain; charset=utf-8" }).end(
+      OPENAI_APPS_CHALLENGE_TOKEN
+    );
     return;
   }
 
