@@ -4,24 +4,25 @@
 
 `ClaimGPT`
 
-Note: before using this name publicly, verify the legal/publishing entity and confirm domain/brand availability.
+Use this exact publication name once your OpenAI organization verification matches the publishing entity.
 
 ## Short Description
 
-AI-assisted insurance claim triage that turns intake narratives into structured next steps, missing-document flags, and adjuster-ready summaries.
+AI-assisted casualty claims intelligence that produces severity, reserve, litigation, fraud, medical, and adjuster-action recommendations from claim inputs.
 
 ## Full Description
 
-ClaimGPT helps insurance teams move from raw claim intake to structured triage faster. It analyzes a claim narrative, highlights missing information, flags escalation or fraud-review signals, and renders a workspace that helps an adjuster understand the file quickly.
+ClaimGPT helps casualty teams move from raw claim intake to a traceable OCCIE-style claim review inside ChatGPT. It analyzes FNOL narratives and related source inputs, estimates severity and total incurred exposure, surfaces litigation and fraud signals, reconstructs a medical timeline, and renders an adjuster-facing workspace with specific next-best actions.
 
 ClaimGPT is designed for:
 
-- property claim intake review
-- bodily injury escalation triage
-- documentation gap detection
-- adjuster handoff preparation
+- bodily injury and casualty triage
+- workers' compensation intake review
+- liability and comparative-negligence analysis
+- medical chronology and contradiction spotting
+- reserve support and adjuster handoff preparation
 
-The current starter demonstrates a safe, reviewable read-only workflow suitable for ChatGPT app review and further expansion into a production claims platform.
+The current implementation is intentionally read-only. It does not authorize payment, denial, or record mutation. It produces data-backed recommendations and keeps every synthesized section anchored to supplied claim inputs.
 
 ## Category Positioning
 
@@ -29,16 +30,16 @@ Insurance operations / claims workflow / business productivity
 
 ## Why It’s Useful
 
-- Converts unstructured narratives into a repeatable triage format
-- Reduces time spent identifying missing information
-- Creates clearer next steps for adjusters and intake teams
-- Can be extended into a real claims platform with secure internal integrations
+- Converts unstructured claim narratives into a repeatable casualty review format
+- Surfaces severity, TIP, litigation, and fraud views in one place
+- Reconstructs treatment chronology and highlights contradictions faster
+- Gives adjusters a concise 3-step action plan without mutating any downstream system
 
-## Support Contact Placeholder
+## Support Contact
 
 - Support email: `support@claim-gpt.com`
 - Support URL: `https://claim-gpt.com/support`
 
-## Privacy URL Placeholder
+## Privacy URL
 
 - Privacy policy: `https://claim-gpt.com/privacy`

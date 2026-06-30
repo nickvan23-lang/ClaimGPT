@@ -3,8 +3,8 @@
   "schema_version": 1,
   "app_info": {
     "display_name": "ClaimGPT",
-    "subtitle": "Insurance claim triage",
-    "description": "ClaimGPT helps insurance teams analyze claim intake narratives, identify missing information, surface escalation or fraud-review signals, and render an adjuster-ready triage workspace inside ChatGPT.",
+    "subtitle": "Casualty claims intelligence",
+    "description": "ClaimGPT helps casualty teams analyze FNOL narratives and supplied claim inputs, estimate severity and total incurred exposure, surface litigation or fraud signals, reconstruct treatment timelines, and render an adjuster-ready OCCIE workspace plus an ECO-AI enterprise orchestration blueprint inside ChatGPT.",
     "category": "BUSINESS"
   },
   "tools": {
@@ -15,7 +15,7 @@
         "destructiveHint": false
       },
       "justifications": {
-        "read_only_justification": "Only analyzes the provided claim narrative and returns structured triage results without creating or updating any records.",
+        "read_only_justification": "Only analyzes the provided claim inputs and returns structured casualty-review results without creating or updating any records.",
         "open_world_justification": "Does not publish content or send data to external third-party systems beyond returning the analysis result to ChatGPT.",
         "destructive_justification": "Does not delete, overwrite, revoke, or perform any irreversible action."
       }
@@ -27,7 +27,7 @@
         "destructiveHint": false
       },
       "justifications": {
-        "read_only_justification": "Only formats previously analyzed claim data into a widget-ready workspace and does not modify claim records or external systems.",
+        "read_only_justification": "Only formats previously analyzed claim data into a widget-ready OCCIE workspace and does not modify claim records or external systems.",
         "open_world_justification": "Does not publish, send, or update data in any external or public system.",
         "destructive_justification": "Does not remove data or trigger irreversible actions because it only renders the workspace response."
       }
@@ -35,32 +35,32 @@
   },
   "test_cases": [
     {
-      "description": "Analyze a property damage intake and identify missing documentation.",
-      "user_prompt": "Triage this property damage claim and tell me what documentation is missing.",
+      "description": "Analyze a casualty intake and identify severity, reserve view, and missing documentation.",
+      "user_prompt": "Analyze this casualty claim and tell me the severity score, reserve view, and missing documentation.",
       "file_attachment_urls": null,
       "tools_triggered": "analyze_claim",
-      "expected_output": "Returns structured property-claim triage details with likely missing information and relevant next steps.",
+      "expected_output": "Returns executive status with severity, TIP, litigation, fraud, and likely missing information plus relevant next steps.",
       "expected_output_url": null
     },
     {
-      "description": "Review a bodily injury narrative for escalation need.",
-      "user_prompt": "Analyze this bodily injury claim narrative and tell me if it needs adjuster escalation.",
+      "description": "Review a bodily injury narrative for escalation and litigation pressure.",
+      "user_prompt": "Analyze this bodily injury claim narrative, estimate litigation risk, and tell me if it needs adjuster escalation.",
       "file_attachment_urls": null,
       "tools_triggered": "analyze_claim",
-      "expected_output": "Returns elevated severity when injury details justify it and recommends appropriate review or escalation steps.",
+      "expected_output": "Returns elevated severity when injury details justify it, provides litigation probability, and recommends appropriate review or escalation steps.",
       "expected_output_url": null
     },
     {
-      "description": "Render the full ClaimGPT workspace from claim analysis results.",
-      "user_prompt": "Show me the ClaimGPT workspace for this claim and summarize next steps for the adjuster.",
+      "description": "Render the full ClaimGPT OCCIE workspace from claim analysis results.",
+      "user_prompt": "Show me the ClaimGPT OCCIE workspace for this claim and summarize the top 3 next steps for the adjuster.",
       "file_attachment_urls": null,
       "tools_triggered": "render_claim_workspace",
-      "expected_output": "Loads the ClaimGPT widget with severity, status, confidence, recommended actions, and missing-information sections.",
+      "expected_output": "Loads the ClaimGPT widget with executive status, impact/liability, medical synthesis, anomalies, and a 3-step action plan.",
       "expected_output_url": null
     },
     {
-      "description": "Evaluate a theft claim with no supporting evidence.",
-      "user_prompt": "Use ClaimGPT to review a short theft claim narrative with no supporting evidence.",
+      "description": "Evaluate a liability claim with no supporting evidence.",
+      "user_prompt": "Use ClaimGPT to review a short liability claim narrative with no supporting evidence.",
       "file_attachment_urls": null,
       "tools_triggered": "analyze_claim",
       "expected_output": "Flags the lack of supporting evidence, recommends verification steps, and keeps the workflow read-only.",

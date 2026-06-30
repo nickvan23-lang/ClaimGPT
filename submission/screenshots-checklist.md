@@ -1,6 +1,6 @@
 # ClaimGPT Screenshot Checklist
 
-Prepare these once the production deployment is live and the placeholder legal/support content is replaced.
+Prepare these once `claim-gpt.com` is fully live in Render and serving the production app.
 
 ## Suggested screenshots
 
@@ -12,6 +12,6 @@ Prepare these once the production deployment is live and the placeholder legal/s
 ## Screenshot rules
 
 - Use the production deployment, not localhost or a tunnel
-- Remove placeholder emails, placeholder company names, and placeholder domains
+- Use the final production domain in the browser chrome when possible
 - Ensure the screenshots match the real behavior of the app
 - Avoid showing personal data, internal IDs, or fake telemetry

@@ -1,11 +1,11 @@
 # ClaimGPT
 
-ClaimGPT is a starter ChatGPT app for insurance claim triage. It uses a docs-aligned MCP server plus a widget that renders structured claim analysis inside ChatGPT.
+ClaimGPT is a ChatGPT app for OCCIE-style casualty claims intelligence with an enterprise ECO-AI orchestration branch. It uses a docs-aligned MCP server plus a widget that renders structured claim analysis inside ChatGPT.
 
 This repo now includes the baseline public-launch artifacts required to prepare for submission:
 
-- public privacy page scaffold
-- public support page scaffold
+- public privacy page
+- public support page
 - environment-driven app domain metadata
 - Dockerized production runtime
 - Render deployment manifest
@@ -15,10 +15,10 @@ This repo now includes the baseline public-launch artifacts required to prepare 
 
 `vanilla-widget`
 
-This starter uses a small Node MCP server and one HTML widget. It keeps the architecture simple while still following the current Apps SDK pattern:
+This app uses a small Node MCP server and one HTML widget. It keeps the architecture simple while following the current Apps SDK pattern:
 
-- `analyze_claim` is the data tool.
-- `render_claim_workspace` is the render tool.
+- `analyze_claim` generates the OCCIE-style casualty analysis and enterprise orchestration blueprint.
+- `render_claim_workspace` renders the adjuster-facing workspace.
 
 ## Local run
 
@@ -80,6 +80,7 @@ Health routes:
 - `GET /healthz` for a simple health probe
 - `GET /privacy`
 - `GET /support`
+- `GET /enterprise`
 - `GET|POST|DELETE /mcp`
 
 ## Container deployment
@@ -123,9 +124,9 @@ See [SUBMISSION_CHECKLIST.md](/Users/nicholas/Desktop/ClaimGPT/SUBMISSION_CHECKL
 
 ## Next Steps
 
-1. Deploy `claim-gpt.com` to the live host you chose.
-2. Replace the placeholder legal/support text in `public/privacy.html` and `public/support.html`.
-3. Verify the app in ChatGPT Developer Mode against the public URL.
+1. Wait for `claim-gpt.com` to finish verifying against the live host.
+2. Verify the app in ChatGPT Developer Mode against the public URL.
+3. Capture final submission screenshots from the production deployment.
 4. Submit the app draft in the OpenAI Platform Dashboard.
 
 ## Project structure
@@ -149,9 +150,20 @@ ClaimGPT/
    └─ server.ts
 ```
 
+## Current analysis model
+
+The current implementation is read-only and heuristic. It now returns:
+
+- executive status with severity, TIP, litigation probability, and fraud risk
+- impact and liability analysis
+- medical synthesis with chronology and inline citations to supplied source items
+- enterprise orchestration guidance with MCP tools, workflow stages, guardrails, and integration architecture
+- anomalies and red flags
+- a 3-step adjuster action plan
+
 ## Next useful extensions
 
 - Replace the heuristic analysis in `src/server.ts` with a real claims workflow or model-backed service.
-- Add secure claimant/document lookup tools.
+- Add secure claimant/document lookup tools and real PDF/page extraction.
 - Split the widget into a React frontend if the workspace needs richer interactions.
 - Add telemetry, error reporting, and a real deployment target such as Vercel, Fly.io, or Cloud Run.
