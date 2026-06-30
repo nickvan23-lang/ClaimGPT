@@ -3,19 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ClaimGPT</title>
+    <title>ClaimGPT OCCIE Workspace</title>
     <style>
       :root {
-        --bg: #f3efe7;
-        --panel: rgba(255, 252, 246, 0.9);
-        --ink: #1d2433;
-        --muted: #5e6678;
-        --line: rgba(29, 36, 51, 0.1);
-        --accent: #a5441d;
-        --accent-dark: #7d3415;
-        --card: #fffdf9;
-        --warn: #b86a00;
-        --danger: #b22828;
+        --bg: #f2ede4;
+        --panel: rgba(255, 252, 247, 0.94);
+        --card: #fffdfa;
+        --ink: #1a2230;
+        --muted: #5d6677;
+        --line: rgba(26, 34, 48, 0.1);
+        --accent: #9f471d;
+        --accent-2: #c87a33;
+        --green: #0e6f4b;
+        --amber: #9a6500;
+        --red: #a72626;
+        --slate: #2c405f;
         font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
         color: var(--ink);
       }
@@ -29,19 +31,18 @@
         min-height: 100vh;
         padding: 16px;
         background:
-          radial-gradient(circle at top left, rgba(165, 68, 29, 0.16), transparent 34%),
-          linear-gradient(180deg, #f7f2ea 0%, #efe7db 100%);
+          radial-gradient(circle at top left, rgba(159, 71, 29, 0.18), transparent 35%),
+          linear-gradient(180deg, #f8f2ea 0%, #eee4d6 100%);
       }
 
       main {
-        width: 100%;
-        max-width: 720px;
+        max-width: 980px;
         margin: 0 auto;
         padding: 22px;
-        border-radius: 24px;
-        background: var(--panel);
+        border-radius: 26px;
         border: 1px solid var(--line);
-        box-shadow: 0 20px 44px rgba(58, 43, 24, 0.12);
+        background: var(--panel);
+        box-shadow: 0 22px 50px rgba(59, 44, 25, 0.12);
         backdrop-filter: blur(10px);
       }
 
@@ -50,22 +51,31 @@
         gap: 16px;
       }
 
-      .hero {
+      .hero,
+      .stats,
+      .grid,
+      .panel-grid {
         display: grid;
-        gap: 10px;
+        gap: 14px;
+      }
+
+      .hero {
+        grid-template-columns: 1.35fr 0.65fr;
+        align-items: start;
       }
 
       .eyebrow {
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
+        margin: 0 0 8px;
         font-size: 11px;
         font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
         color: var(--accent);
       }
 
       h1,
       h2,
+      h3,
       p {
         margin: 0;
       }
@@ -75,29 +85,90 @@
         line-height: 1;
       }
 
-      .subhead {
+      h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .subhead,
+      .copy,
+      .meta,
+      li {
         color: var(--muted);
-        font-size: 16px;
+      }
+
+      .subhead,
+      .copy,
+      li {
+        line-height: 1.5;
       }
 
       .summary {
+        margin-top: 12px;
         padding: 16px 18px;
         border-radius: 18px;
-        background: linear-gradient(135deg, rgba(165, 68, 29, 0.08), rgba(255, 255, 255, 0.75));
-        border: 1px solid rgba(165, 68, 29, 0.12);
+        border: 1px solid rgba(159, 71, 29, 0.12);
+        background: linear-gradient(135deg, rgba(159, 71, 29, 0.1), rgba(255, 255, 255, 0.72));
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 9px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+      }
+
+      .band-low,
+      .status-triage,
+      .status-new {
+        color: var(--green);
+        background: #edf9f3;
+        border-color: #b8e2cb;
+      }
+
+      .band-moderate,
+      .status-awaiting-docs,
+      .status-investigating {
+        color: var(--amber);
+        background: #fff7e7;
+        border-color: #f0d095;
+      }
+
+      .band-high,
+      .band-critical,
+      .status-escalated,
+      .status-adjuster-review {
+        color: var(--red);
+        background: #fff1f1;
+        border-color: #efb2b2;
       }
 
       .stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      .stat,
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
       }
 
       .stat {
         padding: 14px;
-        border-radius: 16px;
-        background: var(--card);
-        border: 1px solid var(--line);
       }
 
       .stat-label {
@@ -110,26 +181,20 @@
       }
 
       .stat-value {
-        font-size: 21px;
+        font-size: 22px;
         font-weight: 700;
       }
 
       .grid {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 14px;
+        grid-template-columns: 1.1fr 0.9fr;
       }
 
       .panel {
         padding: 16px;
-        border-radius: 18px;
-        background: var(--card);
-        border: 1px solid var(--line);
       }
 
-      .panel h2 {
-        font-size: 18px;
-        margin-bottom: 12px;
+      .panel-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
       ul {
@@ -139,53 +204,50 @@
         gap: 8px;
       }
 
-      li {
+      .citations {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .citation {
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: #fffaf4;
+        font-size: 13px;
         line-height: 1.45;
       }
 
-      .badge-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+      .timeline {
+        display: grid;
+        gap: 10px;
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        border: 1px solid transparent;
+      .timeline-item {
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: #fffefb;
       }
 
-      .badge.severity-low,
-      .badge.status-triage {
-        color: #22543d;
-        background: #ecfdf3;
-        border-color: #b7e8c9;
+      .timeline-item strong,
+      .plan-item strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
       }
 
-      .badge.severity-moderate,
-      .badge.status-awaiting-docs {
-        color: var(--warn);
-        background: #fff7e8;
-        border-color: #f0d29f;
+      .plan-list {
+        display: grid;
+        gap: 10px;
       }
 
-      .badge.severity-high,
-      .badge.status-ready-for-adjuster {
-        color: var(--danger);
-        background: #fff0f0;
-        border-color: #efb0b0;
-      }
-
-      .badge.status-new {
-        color: #37507a;
-        background: #eef5ff;
-        border-color: #bacef0;
+      .plan-item {
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(159, 71, 29, 0.12);
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,241,231,0.92));
       }
 
       .actions {
@@ -215,18 +277,19 @@
       }
 
       .meta {
-        color: var(--muted);
         font-size: 13px;
       }
 
-      @media (max-width: 720px) {
-        h1 {
-          font-size: 28px;
+      @media (max-width: 900px) {
+        .hero,
+        .grid,
+        .panel-grid,
+        .stats {
+          grid-template-columns: 1fr;
         }
 
-        .stats,
-        .grid {
-          grid-template-columns: 1fr;
+        .badge-row {
+          justify-content: flex-start;
         }
       }
     </style>
@@ -234,15 +297,22 @@
   <body>
     <main class="stack">
       <section class="hero">
-        <p class="eyebrow">Claim intake workspace</p>
-        <h1 id="headline">ClaimGPT</h1>
-        <p class="subhead" id="subhead">AI-assisted claim triage workspace</p>
-      </section>
-
-      <section class="summary">
-        <p id="summary">
-          Run `analyze_claim`, then `render_claim_workspace` to populate this claim triage dashboard.
-        </p>
+        <div>
+          <p class="eyebrow">Omni-Casualty Claims Intelligence Engine</p>
+          <h1 id="headline">ClaimGPT OCCIE Workspace</h1>
+          <p class="subhead" id="subhead">
+            Casualty claims intelligence for triage, reserving, and red-flag review
+          </p>
+          <div class="summary">
+            <p class="copy" id="traceability-note">
+              Run `analyze_claim`, then `render_claim_workspace` to populate this traceable casualty analysis workspace.
+            </p>
+          </div>
+        </div>
+        <div class="badge-row">
+          <span class="badge status-new" id="status-badge">New</span>
+          <span class="badge band-low" id="severity-band-badge">Low</span>
+        </div>
       </section>
 
       <section class="stats">
@@ -251,124 +321,504 @@
           <strong class="stat-value" id="claim-type">Pending</strong>
         </div>
         <div class="stat">
-          <span class="stat-label">Severity</span>
-          <strong class="stat-value" id="severity">Pending</strong>
+          <span class="stat-label">Severity Score</span>
+          <strong class="stat-value" id="severity-score">0</strong>
         </div>
         <div class="stat">
-          <span class="stat-label">Confidence</span>
-          <strong class="stat-value" id="confidence">0%</strong>
+          <span class="stat-label">TIP</span>
+          <strong class="stat-value" id="tip-amount">$0</strong>
         </div>
-      </section>
-
-      <section class="badge-row">
-        <span class="badge status-new" id="status-badge">New</span>
-        <span class="badge severity-low" id="severity-badge">Low severity</span>
+        <div class="stat">
+          <span class="stat-label">Litigation</span>
+          <strong class="stat-value" id="litigation-probability">0%</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Fraud Risk</span>
+          <strong class="stat-value" id="fraud-risk">0%</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Route</span>
+          <strong class="stat-value" id="route">Pending</strong>
+        </div>
       </section>
 
       <section class="grid">
         <article class="panel">
-          <h2>Recommended Actions</h2>
-          <ul id="recommended-actions">
-            <li>No actions yet.</li>
+          <h2>Impact & Liability</h2>
+          <p class="copy" id="biomechanical-plausibility">
+            Biomechanical plausibility analysis will appear here.
+          </p>
+          <div class="panel-grid" style="margin-top: 12px;">
+            <div>
+              <h3>Liability View</h3>
+              <p class="copy" id="liability-assessment">Pending.</p>
+            </div>
+            <div>
+              <h3>Comparative Negligence</h3>
+              <p class="copy">
+                <strong id="comparative-negligence">0%</strong>
+              </p>
+              <p class="copy" id="subrogation-opportunity">Pending.</p>
+            </div>
+          </div>
+          <div class="citations" id="impact-citations"></div>
+        </article>
+
+        <article class="panel">
+          <h2>Reserve View</h2>
+          <p class="copy" id="tip-rationale">TIP rationale pending.</p>
+          <p class="copy" id="reserve-recommendation" style="margin-top: 10px;">
+            Reserve recommendation pending.
+          </p>
+          <ul>
+            <li id="tip-range">Range: $0 - $0</li>
+            <li id="tip-confidence">Confidence: 0%</li>
+            <li id="complexity-score">Complexity score: 0</li>
+            <li id="impact-score">Impact severity score: 0</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel">
+          <h2>Medical Synthesis</h2>
+          <ul>
+            <li id="injury-overview">Initial injury overview pending.</li>
+            <li id="current-medical-status">Current medical status pending.</li>
+            <li id="future-treatment-trajectory">Future treatment trajectory pending.</li>
           </ul>
         </article>
 
         <article class="panel">
           <h2>Missing Information</h2>
           <ul id="missing-information">
-            <li>No missing information yet.</li>
+            <li>No missing information flagged.</li>
           </ul>
         </article>
       </section>
 
       <section class="panel">
-        <h2>Fraud / Escalation Signals</h2>
-        <ul id="fraud-signals">
-          <li>No fraud signals yet.</li>
-        </ul>
+        <h2>Chronological Treatment Timeline</h2>
+        <div class="timeline" id="treatment-chronology">
+          <div class="timeline-item">No treatment chronology available yet.</div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel">
+          <h2>Anomalies & Red Flags</h2>
+          <div class="timeline" id="anomalies-list">
+            <div class="timeline-item">No red flags detected yet.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Fraud & Network Review</h2>
+          <ul>
+            <li id="entity-resolution-summary">Entity-resolution summary pending.</li>
+            <li id="alternative-data-summary">Alternative-data review pending.</li>
+            <li id="forensics-summary">Forensics summary pending.</li>
+          </ul>
+          <div class="citations" id="fraud-review-citations"></div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h2>Adjuster Action Plan</h2>
+        <div class="plan-list" id="action-plan">
+          <div class="plan-item">No next-best actions generated yet.</div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel">
+          <h2>ECO-AI Guardrails</h2>
+          <ul id="compliance-guardrails">
+            <li>No guardrails loaded yet.</li>
+          </ul>
+          <p class="copy" id="human-in-loop-notice" style="margin-top: 12px;">
+            Human-in-the-loop notice pending.
+          </p>
+        </article>
+
+        <article class="panel">
+          <h2>MCP Tool Map</h2>
+          <div class="timeline" id="mcp-tools">
+            <div class="timeline-item">No MCP tools loaded yet.</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel-grid">
+        <article class="panel">
+          <h2>Workflow Stages</h2>
+          <div class="timeline" id="workflow-stages">
+            <div class="timeline-item">No workflow stages loaded yet.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Integration Architecture</h2>
+          <ul id="integration-architecture">
+            <li>No integration architecture loaded yet.</li>
+          </ul>
+        </article>
       </section>
 
       <section class="actions">
         <button class="primary" id="sample-claim-button" type="button">
-          Run Sample Claim Review
+          Run Sample Casualty Analysis
         </button>
         <button class="secondary" id="follow-up-button" type="button">
-          Ask ChatGPT For Next Steps
+          Ask ChatGPT For Adjuster Guidance
         </button>
       </section>
 
-      <p class="meta" id="meta">
-        Runtime: waiting for MCP Apps bridge initialization.
-      </p>
+      <p class="meta" id="meta">Runtime: waiting for MCP Apps bridge initialization.</p>
     </main>
 
     <script type="module">
-      const headlineEl = document.querySelector("#headline");
-      const subheadEl = document.querySelector("#subhead");
-      const summaryEl = document.querySelector("#summary");
-      const claimTypeEl = document.querySelector("#claim-type");
-      const severityEl = document.querySelector("#severity");
-      const confidenceEl = document.querySelector("#confidence");
-      const statusBadgeEl = document.querySelector("#status-badge");
-      const severityBadgeEl = document.querySelector("#severity-badge");
-      const recommendedActionsEl = document.querySelector("#recommended-actions");
-      const missingInformationEl = document.querySelector("#missing-information");
-      const fraudSignalsEl = document.querySelector("#fraud-signals");
-      const sampleClaimButtonEl = document.querySelector("#sample-claim-button");
-      const followUpButtonEl = document.querySelector("#follow-up-button");
-      const metaEl = document.querySelector("#meta");
+      const el = {
+        headline: document.querySelector("#headline"),
+        subhead: document.querySelector("#subhead"),
+        traceabilityNote: document.querySelector("#traceability-note"),
+        claimType: document.querySelector("#claim-type"),
+        severityScore: document.querySelector("#severity-score"),
+        tipAmount: document.querySelector("#tip-amount"),
+        litigationProbability: document.querySelector("#litigation-probability"),
+        fraudRisk: document.querySelector("#fraud-risk"),
+        route: document.querySelector("#route"),
+        statusBadge: document.querySelector("#status-badge"),
+        severityBandBadge: document.querySelector("#severity-band-badge"),
+        biomechanicalPlausibility: document.querySelector("#biomechanical-plausibility"),
+        liabilityAssessment: document.querySelector("#liability-assessment"),
+        comparativeNegligence: document.querySelector("#comparative-negligence"),
+        subrogationOpportunity: document.querySelector("#subrogation-opportunity"),
+        impactCitations: document.querySelector("#impact-citations"),
+        tipRationale: document.querySelector("#tip-rationale"),
+        reserveRecommendation: document.querySelector("#reserve-recommendation"),
+        tipRange: document.querySelector("#tip-range"),
+        tipConfidence: document.querySelector("#tip-confidence"),
+        complexityScore: document.querySelector("#complexity-score"),
+        impactScore: document.querySelector("#impact-score"),
+        injuryOverview: document.querySelector("#injury-overview"),
+        currentMedicalStatus: document.querySelector("#current-medical-status"),
+        futureTreatmentTrajectory: document.querySelector("#future-treatment-trajectory"),
+        missingInformation: document.querySelector("#missing-information"),
+        treatmentChronology: document.querySelector("#treatment-chronology"),
+        anomaliesList: document.querySelector("#anomalies-list"),
+        entityResolutionSummary: document.querySelector("#entity-resolution-summary"),
+        alternativeDataSummary: document.querySelector("#alternative-data-summary"),
+        forensicsSummary: document.querySelector("#forensics-summary"),
+        fraudReviewCitations: document.querySelector("#fraud-review-citations"),
+        actionPlan: document.querySelector("#action-plan"),
+        complianceGuardrails: document.querySelector("#compliance-guardrails"),
+        humanInLoopNotice: document.querySelector("#human-in-loop-notice"),
+        mcpTools: document.querySelector("#mcp-tools"),
+        workflowStages: document.querySelector("#workflow-stages"),
+        integrationArchitecture: document.querySelector("#integration-architecture"),
+        sampleClaimButton: document.querySelector("#sample-claim-button"),
+        followUpButton: document.querySelector("#follow-up-button"),
+        meta: document.querySelector("#meta"),
+      };
 
       let toolOutput = null;
       let rpcId = 0;
       const pendingRequests = new Map();
 
-      const setList = (element, items, emptyText) => {
-        element.innerHTML = "";
+      const formatCurrency = (value) =>
+        new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          maximumFractionDigits: 0,
+        }).format(value ?? 0);
+
+      const setList = (container, items, emptyText) => {
+        container.innerHTML = "";
         const source = items && items.length ? items : [emptyText];
 
         source.forEach((item) => {
           const li = document.createElement("li");
           li.textContent = item;
-          element.appendChild(li);
+          container.appendChild(li);
         });
+      };
+
+      const renderCitations = (container, citations) => {
+        container.innerHTML = "";
+        const source = citations && citations.length ? citations : [];
+
+        source.forEach((item) => {
+          const div = document.createElement("div");
+          const location = [];
+          if (item.page) location.push("p." + item.page);
+          if (item.paragraph) location.push("para. " + item.paragraph);
+
+          div.className = "citation";
+          div.textContent =
+            item.label +
+            (location.length ? " (" + location.join(", ") + ")" : "") +
+            ": " +
+            item.excerpt;
+          container.appendChild(div);
+        });
+
+        if (!source.length) {
+          const div = document.createElement("div");
+          div.className = "citation";
+          div.textContent = "No supporting citations available yet.";
+          container.appendChild(div);
+        }
+      };
+
+      const renderChronology = (items) => {
+        el.treatmentChronology.innerHTML = "";
+        const source = items && items.length ? items : [];
+
+        source.forEach((item) => {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+
+          const heading = document.createElement("strong");
+          heading.textContent = item.date + " • " + item.provider;
+          article.appendChild(heading);
+
+          const detail = document.createElement("p");
+          detail.className = "copy";
+          detail.textContent = item.eventType + ": " + item.details;
+          article.appendChild(detail);
+
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          const bits = [];
+          if (item.icdCodes?.length) bits.push("ICD: " + item.icdCodes.join(", "));
+          if (item.procedures?.length) bits.push("Procedures: " + item.procedures.join(", "));
+          if (item.prescriptions?.length) bits.push("Rx: " + item.prescriptions.join(", "));
+          meta.textContent = bits.length ? bits.join(" | ") : "No coded medical detail provided.";
+          article.appendChild(meta);
+
+          const citations = document.createElement("div");
+          citations.className = "citations";
+          renderCitations(citations, item.citations);
+          article.appendChild(citations);
+          el.treatmentChronology.appendChild(article);
+        });
+
+        if (!source.length) {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+          article.textContent = "No treatment chronology available yet.";
+          el.treatmentChronology.appendChild(article);
+        }
+      };
+
+      const renderAnomalies = (items) => {
+        el.anomaliesList.innerHTML = "";
+        const source = items && items.length ? items : [];
+
+        source.forEach((item) => {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+
+          const heading = document.createElement("strong");
+          heading.textContent =
+            item.title + " • " + item.category.replaceAll("_", " ") + " • " + item.severity;
+          article.appendChild(heading);
+
+          const detail = document.createElement("p");
+          detail.className = "copy";
+          detail.textContent = item.details;
+          article.appendChild(detail);
+
+          const citations = document.createElement("div");
+          citations.className = "citations";
+          renderCitations(citations, item.citations);
+          article.appendChild(citations);
+          el.anomaliesList.appendChild(article);
+        });
+
+        if (!source.length) {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+          article.textContent = "No red flags detected yet.";
+          el.anomaliesList.appendChild(article);
+        }
+      };
+
+      const renderActionPlan = (items) => {
+        el.actionPlan.innerHTML = "";
+        const source = items && items.length ? items : [];
+
+        source.forEach((item) => {
+          const article = document.createElement("article");
+          article.className = "plan-item";
+
+          const heading = document.createElement("strong");
+          heading.textContent = "Priority " + item.priority + ": " + item.action;
+          article.appendChild(heading);
+
+          const detail = document.createElement("p");
+          detail.className = "copy";
+          detail.textContent = item.rationale;
+          article.appendChild(detail);
+
+          const citations = document.createElement("div");
+          citations.className = "citations";
+          renderCitations(citations, item.citations);
+          article.appendChild(citations);
+          el.actionPlan.appendChild(article);
+        });
+
+        if (!source.length) {
+          const article = document.createElement("article");
+          article.className = "plan-item";
+          article.textContent = "No next-best actions generated yet.";
+          el.actionPlan.appendChild(article);
+        }
+      };
+
+      const renderToolCards = (items) => {
+        el.mcpTools.innerHTML = "";
+        const source = items && items.length ? items : [];
+
+        source.forEach((item) => {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+
+          const heading = document.createElement("strong");
+          heading.textContent = item.name + " • " + item.mode.replaceAll("_", " ");
+          article.appendChild(heading);
+
+          const detail = document.createElement("p");
+          detail.className = "copy";
+          detail.textContent = item.system + " — " + item.purpose;
+          article.appendChild(detail);
+          el.mcpTools.appendChild(article);
+        });
+
+        if (!source.length) {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+          article.textContent = "No MCP tools loaded yet.";
+          el.mcpTools.appendChild(article);
+        }
+      };
+
+      const renderWorkflowStages = (items) => {
+        el.workflowStages.innerHTML = "";
+        const source = items && items.length ? items : [];
+
+        source.forEach((item) => {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+
+          const heading = document.createElement("strong");
+          heading.textContent = item.stage;
+          article.appendChild(heading);
+
+          const objective = document.createElement("p");
+          objective.className = "copy";
+          objective.textContent = item.objective;
+          article.appendChild(objective);
+
+          const list = document.createElement("ul");
+          item.steps.forEach((step) => {
+            const li = document.createElement("li");
+            li.textContent = step;
+            list.appendChild(li);
+          });
+          article.appendChild(list);
+          el.workflowStages.appendChild(article);
+        });
+
+        if (!source.length) {
+          const article = document.createElement("article");
+          article.className = "timeline-item";
+          article.textContent = "No workflow stages loaded yet.";
+          el.workflowStages.appendChild(article);
+        }
       };
 
       const render = () => {
         const output = toolOutput ?? {};
-        headlineEl.textContent = output.headline ?? "ClaimGPT";
-        subheadEl.textContent = output.subhead ?? "AI-assisted claim triage workspace";
-        summaryEl.textContent =
-          output.summary ??
-          "Run analyze_claim, then render_claim_workspace to populate this claim triage dashboard.";
-        claimTypeEl.textContent = output.claimType ?? "Pending";
-        severityEl.textContent = output.severity ?? "Pending";
-        confidenceEl.textContent = output.confidence
-          ? Math.round(output.confidence * 100) + "%"
-          : "0%";
+        const executive = output.executiveStatus ?? {};
+        const tip = executive.totalIncurredPrediction ?? {};
+        const liability = output.impactLiability ?? {};
+        const medical = output.medicalSynthesis ?? {};
+        const fraudReview = output.fraudReview ?? {};
+        const orchestration = output.enterpriseOrchestration ?? {};
 
-        const status = output.status ?? "new";
-        const severity = output.severity ?? "low";
+        el.headline.textContent = output.headline ?? "ClaimGPT OCCIE Workspace";
+        el.subhead.textContent =
+          output.subhead ?? "Casualty claims intelligence for triage, reserving, and red-flag review";
+        el.traceabilityNote.textContent =
+          output.traceabilityNote ??
+          "Run analyze_claim, then render_claim_workspace to populate this traceable casualty analysis workspace.";
 
-        statusBadgeEl.textContent = status.replaceAll("-", " ");
-        statusBadgeEl.className = "badge status-" + status;
+        el.claimType.textContent = output.claimType ? output.claimType.replaceAll("_", " ") : "Pending";
+        el.severityScore.textContent = executive.severityScore ?? 0;
+        el.tipAmount.textContent = formatCurrency(tip.amount ?? 0);
+        el.litigationProbability.textContent = (executive.litigationProbability ?? 0) + "%";
+        el.fraudRisk.textContent = (executive.fraudRisk ?? 0) + "%";
+        el.route.textContent = executive.route ?? "Pending";
 
-        severityBadgeEl.textContent = severity + " severity";
-        severityBadgeEl.className = "badge severity-" + severity;
+        const status = executive.status ?? "new";
+        const band = executive.severityBand ?? "low";
+        el.statusBadge.textContent = status.replaceAll("-", " ");
+        el.statusBadge.className = "badge status-" + status;
+        el.severityBandBadge.textContent = band;
+        el.severityBandBadge.className = "badge band-" + band;
 
+        el.biomechanicalPlausibility.textContent =
+          liability.biomechanicalPlausibility ?? "Biomechanical plausibility analysis will appear here.";
+        el.liabilityAssessment.textContent = liability.liabilityAssessment ?? "Pending.";
+        el.comparativeNegligence.textContent = (liability.comparativeNegligencePercent ?? 0) + "%";
+        el.subrogationOpportunity.textContent = liability.subrogationOpportunity ?? "Pending.";
+        renderCitations(el.impactCitations, liability.citations);
+
+        el.tipRationale.textContent = tip.rationale ?? "TIP rationale pending.";
+        el.reserveRecommendation.textContent =
+          executive.reserveRecommendation ?? "Reserve recommendation pending.";
+        el.tipRange.textContent =
+          "Range: " + formatCurrency(tip.low ?? 0) + " - " + formatCurrency(tip.high ?? 0);
+        el.tipConfidence.textContent =
+          "Confidence: " + Math.round((tip.confidence ?? 0) * 100) + "%";
+        el.complexityScore.textContent =
+          "Complexity score: " + (executive.complexityScore ?? 0);
+        el.impactScore.textContent =
+          "Impact severity score: " + (liability.impactSeverityScore ?? 0);
+
+        el.injuryOverview.textContent =
+          medical.initialInjuryOverview ?? "Initial injury overview pending.";
+        el.currentMedicalStatus.textContent =
+          medical.currentMedicalStatus ?? "Current medical status pending.";
+        el.futureTreatmentTrajectory.textContent =
+          medical.futureTreatmentTrajectory ?? "Future treatment trajectory pending.";
+
+        setList(el.missingInformation, output.missingInformation, "No missing information flagged.");
+        renderChronology(medical.chronology);
+        renderAnomalies(output.anomaliesAndRedFlags);
+        el.entityResolutionSummary.textContent =
+          fraudReview.entityResolutionSummary ?? "Entity-resolution summary pending.";
+        el.alternativeDataSummary.textContent =
+          fraudReview.alternativeDataSummary ?? "Alternative-data review pending.";
+        el.forensicsSummary.textContent =
+          fraudReview.forensicsSummary ?? "Forensics summary pending.";
+        renderCitations(el.fraudReviewCitations, fraudReview.citations);
+        renderActionPlan(output.adjusterActionPlan);
+        setList(el.complianceGuardrails, orchestration.complianceGuardrails, "No guardrails loaded yet.");
+        el.humanInLoopNotice.textContent =
+          orchestration.humanInLoopNotice ?? "Human-in-the-loop notice pending.";
+        renderToolCards(orchestration.mcpTools);
+        renderWorkflowStages(orchestration.workflowStages);
         setList(
-          recommendedActionsEl,
-          output.recommendedActions,
-          "No recommendations yet."
+          el.integrationArchitecture,
+          orchestration.integrationArchitecture,
+          "No integration architecture loaded yet."
         );
-        setList(
-          missingInformationEl,
-          output.missingInformation,
-          "No missing information flagged."
-        );
-        setList(fraudSignalsEl, output.fraudSignals, "No fraud signals detected.");
 
         const theme = window.openai?.theme ?? "bridge-only";
-        metaEl.textContent =
+        el.meta.textContent =
           "Runtime: " +
           (window.openai ? "MCP Apps bridge + optional window.openai" : "MCP Apps bridge only") +
           " | Theme: " +
@@ -389,20 +839,14 @@
       window.addEventListener(
         "message",
         (event) => {
-          if (event.source !== window.parent) {
-            return;
-          }
+          if (event.source !== window.parent) return;
 
           const message = event.data;
-          if (!message || message.jsonrpc !== "2.0") {
-            return;
-          }
+          if (!message || message.jsonrpc !== "2.0") return;
 
           if (typeof message.id === "number") {
             const pending = pendingRequests.get(message.id);
-            if (!pending) {
-              return;
-            }
+            if (!pending) return;
 
             pendingRequests.delete(message.id);
             if (message.error) {
@@ -424,7 +868,7 @@
 
       const initializeBridge = async () => {
         await rpcRequest("ui/initialize", {
-          appInfo: { name: "claimgpt-widget", version: "0.1.0" },
+          appInfo: { name: "claimgpt-widget", version: "0.2.0" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
@@ -433,16 +877,82 @@
 
       const bridgeReady = initializeBridge();
 
-      sampleClaimButtonEl.addEventListener("click", async () => {
+      el.sampleClaimButton.addEventListener("click", async () => {
         await bridgeReady;
 
         const analysis = await rpcRequest("tools/call", {
           name: "analyze_claim",
           arguments: {
-            claimType: "property",
+            claimType: "bodily_injury",
             narrative:
-              "Water leak discovered on 06/17/2026 in the kitchen after the homeowner returned from travel. Cabinets are damaged and mitigation has started, but the claimant has not yet provided photos or the plumber invoice.",
-            evidenceCount: 1,
+              "Rear-end loss on 2026-06-14. Claimant reports neck and lumbar pain after ambulance transport from the scene. The claimant is requesting an urgent payout, says the story changed after talking with family, and has missed work since the collision.",
+            evidenceCount: 4,
+            claimantAge: 47,
+            priorConditions: ["prior cervical strain"],
+            jurisdiction: "California",
+            telematicsSummary:
+              "Rear-end impact with airbag non-deployment, moderate rear intrusion, vehicle towed from scene.",
+            imageObservations: [
+              "Rear bumper crushed with trunk intrusion",
+              "No visible front-end claimant vehicle damage",
+            ],
+            policeReportSummary:
+              "Officer notes both drivers claim the light was yellow and recommends shared-fault evaluation pending witness contact.",
+            medicalRecords: [
+              {
+                sourceId: "er-1",
+                provider: "Mercy ER",
+                noteDate: "2026-06-14",
+                summary:
+                  "ER evaluation documented cervical strain, lumbar pain, and transport from the collision scene.",
+                icdCodes: ["S13.4XXA", "M54.50"],
+                prescriptions: ["Cyclobenzaprine", "Ibuprofen"],
+                procedures: ["ER evaluation"],
+                page: 3,
+                paragraph: 2,
+              },
+              {
+                sourceId: "pt-1",
+                provider: "Downtown PT",
+                noteDate: "2026-06-20",
+                summary:
+                  "Physical therapy intake reports reduced range of motion and ongoing work limitations.",
+                icdCodes: ["M54.2", "M54.50"],
+                prescriptions: [],
+                procedures: ["Physical therapy evaluation"],
+                page: 1,
+                paragraph: 4,
+              },
+            ],
+            bills: [
+              {
+                sourceId: "bill-1",
+                provider: "Mercy ER",
+                amount: 6400,
+                description: "Emergency evaluation and imaging",
+                page: 1,
+                paragraph: 1,
+              },
+              {
+                sourceId: "bill-2",
+                provider: "Downtown PT",
+                amount: 1850,
+                description: "Initial PT evaluation package",
+                page: 1,
+                paragraph: 2,
+              },
+            ],
+            communications: [
+              {
+                sourceId: "comm-1",
+                authorRole: "claimant",
+                date: "2026-06-18",
+                summary:
+                  "Claimant asked for urgent payout and said the family helped rewrite parts of the story.",
+                page: 1,
+                paragraph: 1,
+              },
+            ],
           },
         });
 
@@ -455,14 +965,12 @@
         render();
       });
 
-      followUpButtonEl.addEventListener("click", async () => {
+      el.followUpButton.addEventListener("click", async () => {
         await bridgeReady;
 
         const prompt = toolOutput?.claimType
-          ? "Suggest the next adjuster actions for this " +
-            toolOutput.claimType +
-            " claim based on the current ClaimGPT workspace."
-          : "Explain how ClaimGPT should be used during claim intake.";
+          ? "Use the current ClaimGPT OCCIE workspace to explain the top adjuster priorities, reserve posture, and contradiction risks for this claim."
+          : "Explain how ClaimGPT OCCIE should be used for a casualty claim review.";
 
         rpcNotify("ui/message", {
           role: "user",

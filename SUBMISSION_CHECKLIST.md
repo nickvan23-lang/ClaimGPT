@@ -7,39 +7,44 @@ This checklist maps the current repo to the current Apps SDK submission requirem
 - App archetype: `vanilla-widget`
 - Public app name candidate: `ClaimGPT`
 - Current MCP path: `/mcp`
-- Current review mode: starter / pre-production
+- Current review mode: OCCIE casualty-analysis / pre-production
 
 ## Items now present in the repo
 
 - MCP server entrypoint with public `/mcp` route
 - Widget resource using `text/html;profile=mcp-app`
 - Explicit CSP keys on the widget resource
-- Public privacy page scaffold at `/privacy`
-- Public support page scaffold at `/support`
+- Public privacy page at `/privacy`
+- Public support page at `/support`
+- Public enterprise architecture page at `/enterprise`
 - Basic health metadata at `/`
 - Read-only tools with explicit annotations
 - Decoupled data tool + render tool structure
+- OCCIE-style executive status, medical synthesis, anomaly detection, and adjuster action planning
+- ECO-AI orchestration branch describing MCP tools, workflow stages, and human-in-the-loop guardrails
 - Draft listing copy and review-test assets under `submission/`
+- Render deployment configured and live on the Render subdomain
+- Production DNS records added for `claim-gpt.com`
 
 ## Required before submission
 
-1. Replace every placeholder in `public/privacy.html` and `public/support.html`.
-2. Choose and verify the final publication name under your legal entity.
-3. Buy or assign a real public domain and set:
-   - `CLAIMGPT_PUBLIC_DOMAIN`
-   - `CLAIMGPT_PRIVACY_URL`
-   - `CLAIMGPT_SUPPORT_URL`
-4. Deploy the app to a stable public HTTPS endpoint. Do not submit a tunnel URL.
-5. Install dependencies and run:
+1. Choose and verify the final publication name under your legal entity.
+2. Confirm the custom domain is fully live and serving the production app:
+   - `https://claim-gpt.com/`
+   - `https://claim-gpt.com/privacy`
+   - `https://claim-gpt.com/support`
+   - `https://claim-gpt.com/status`
+   - `https://claim-gpt.com/healthz`
+   - `https://claim-gpt.com/mcp`
+3. Install dependencies and run:
    - `npm install`
    - `npm run check`
    - `npm run build`
-6. Exercise the app in ChatGPT Developer Mode using realistic prompts.
-7. Capture submission screenshots showing the real UI, not placeholders.
-8. Prepare final support contact details.
-9. Verify your OpenAI organization for the publication name you will use.
-10. Prepare test prompts and expected results for review.
-11. Finalize listing text, screenshots, and release notes from the `submission/` folder.
+4. Exercise the app in ChatGPT Developer Mode using realistic prompts.
+5. Capture submission screenshots showing the real UI on the production deployment.
+6. Verify your OpenAI organization for the publication name you will use.
+7. Finalize listing text, screenshots, and release notes from the `submission/` folder.
+8. Confirm whether `support@claim-gpt.com` should receive real email before public launch.
 
 ## Name security steps
 
@@ -53,14 +58,14 @@ The repo cannot reserve the public app name by itself. To reduce the risk of los
 
 ## Final launch order
 
-1. Deploy the app on `https://claim-gpt.com`.
-2. Verify `/`, `/privacy`, `/support`, `/status`, and `/healthz`.
-3. Replace placeholder legal/support copy.
-4. Refresh the app metadata in ChatGPT Developer Mode.
+1. Wait for `claim-gpt.com` and `www.claim-gpt.com` to finish resolving and verifying in Render.
+2. Verify `/`, `/privacy`, `/support`, `/status`, `/healthz`, and `/mcp` on the custom domain.
+3. Refresh the app metadata in ChatGPT Developer Mode.
+4. Capture final screenshots from the production domain.
 5. Submit the OpenAI app draft.
 
 ## Suggested first review prompts
 
-1. `Triage this property damage claim and tell me what documentation is missing.`
-2. `Analyze this bodily injury claim narrative and tell me if it needs adjuster escalation.`
-3. `Show me the ClaimGPT workspace for this claim and summarize next steps for the adjuster.`
+1. `Analyze this casualty claim and tell me the severity score, reserve view, and missing documentation.`
+2. `Analyze this bodily injury claim narrative, estimate litigation risk, and tell me if it needs escalation.`
+3. `Show me the ClaimGPT OCCIE workspace for this claim and summarize the top 3 next steps for the adjuster.`

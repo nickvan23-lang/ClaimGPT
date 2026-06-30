@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClaimGPT Enterprise | ECO-AI Architecture</title>
+    <meta
+      name="description"
+      content="ClaimGPT Enterprise outlines the ECO-AI orchestration layer for MCP-driven claims workflows, multimodal parsing, and core-system integration."
+    />
+    <style>
+      :root {
+        --paper: #f4efe6;
+        --panel: rgba(255, 252, 247, 0.94);
+        --card: #fffdfa;
+        --ink: #1c2430;
+        --muted: #5d6677;
+        --line: rgba(28, 36, 48, 0.12);
+        --accent: #924317;
+        --accent-2: #cb7c34;
+        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+        color: var(--ink);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(203, 124, 52, 0.16), transparent 32%),
+          linear-gradient(180deg, #faf5ee 0%, #ede2d3 100%);
+      }
+      .shell {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 28px 18px 56px;
+      }
+      .nav, .hero, .grid, .stack {
+        display: grid;
+        gap: 18px;
+      }
+      .nav {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+      .nav-links {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 14px;
+      }
+      .brand {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      a { color: inherit; }
+      .hero {
+        grid-template-columns: 1.2fr 0.8fr;
+        margin-top: 22px;
+      }
+      .panel, .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 22px 46px rgba(43, 35, 24, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      .eyebrow {
+        margin: 0 0 10px;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
+      h1, h2, h3, p { margin: 0; }
+      h1 { font-size: 52px; line-height: 0.96; max-width: 10ch; }
+      h2 { font-size: 22px; margin-bottom: 10px; }
+      h3 { font-size: 16px; margin-bottom: 6px; }
+      p, li { color: var(--muted); line-height: 1.55; }
+      ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .primary { background: var(--accent); color: #fff; }
+      .secondary { border: 1px solid var(--line); background: #fff; }
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+      .stack { margin-top: 18px; }
+      .route-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .callout {
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(146, 67, 23, 0.12);
+        background: linear-gradient(135deg, rgba(146, 67, 23, 0.08), rgba(255,255,255,0.75));
+      }
+      @media (max-width: 900px) {
+        .nav, .hero, .grid, .route-grid { grid-template-columns: 1fr; }
+        h1 { font-size: 38px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="nav">
+        <div class="brand">ClaimGPT Enterprise</div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/enterprise">Enterprise</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/support">Support</a>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="panel">
+          <p class="eyebrow">ECO-AI Architecture</p>
+          <h1>Agentic orchestration for regulated claims operations.</h1>
+          <p style="margin-top:14px;">
+            ClaimGPT Enterprise extends the OCCIE workspace with an orchestration layer built for
+            FNOL intake, document intelligence, policy interpretation, reserve sequencing, and
+            human-in-the-loop claim execution.
+          </p>
+          <div class="cta-row">
+            <a class="button primary" href="/support">Talk To ClaimGPT</a>
+            <a class="button secondary" href="/">View Product Home</a>
+          </div>
+        </div>
+        <div class="panel stack">
+          <div class="callout">
+            <h3>Core Principle</h3>
+            <p>The system recommends, drafts, and sequences. Licensed humans authorize.</p>
+          </div>
+          <div class="callout">
+            <h3>Primary Stack</h3>
+            <p>MCP orchestration, multimodal parsing, core-claims APIs, and audit-grade traceability.</p>
+          </div>
+          <div class="callout">
+            <h3>Target Systems</h3>
+            <p>Guidewire, Duck Creek, Sapiens, fraud vendors, and carrier correspondence services.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>MCP Tooling</h2>
+          <ul>
+            <li>`query_policy_system` for coverage and clause lookup</li>
+            <li>`extract_document_data` for multimodal claims parsing</li>
+            <li>`run_fraud_analytics` for anomaly and network scoring</li>
+            <li>`update_claim_status` for approved status and reserve write-backs</li>
+            <li>`draft_communication` for adjuster-reviewed outbound drafts</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Workflow Stages</h2>
+          <ul>
+            <li>FNOL triage and routing</li>
+            <li>Investigation and contradiction review</li>
+            <li>Policy interpretation and adjudication support</li>
+            <li>Settlement preparation and communication drafting</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Compliance Guardrails</h2>
+          <ul>
+            <li>Traceable citations for every material recommendation</li>
+            <li>No unilateral denials or binding liability decisions</li>
+            <li>HIPAA/GLBA-aware data minimization</li>
+            <li>RBAC and prompt-injection-conscious tool usage</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="stack">
+        <article class="card">
+          <h2>Event-Driven Integration Pattern</h2>
+          <p>
+            Customer portal uploads, claim webhooks, or queue events trigger multimodal parsing and
+            policy/fraud lookups. ClaimGPT then builds a structured file narrative, identifies missing
+            prerequisites, and prepares the next recommended API sequence for the adjuster.
+          </p>
+        </article>
+        <article class="card">
+          <h2>Why This Branch Exists</h2>
+          <p>
+            The OCCIE workspace focuses on claim-level decision support. This enterprise branch shows
+            how the same site expands into carrier-grade orchestration for straight-through processing,
+            reserve sequencing, and audit-ready co-pilot workflows.
+          </p>
+        </article>
+      </section>
+
+      <section class="route-grid">
+        <article class="card">
+          <h2>See It In Product</h2>
+          <p>
+            The live ClaimGPT workspace now exposes guardrails, MCP tool maps, workflow stages, and
+            integration architecture alongside severity, TIP, and fraud review.
+          </p>
+          <div class="cta-row">
+            <a class="button primary" href="/">Open Live Homepage</a>
+          </div>
+        </article>
+        <article class="card">
+          <h2>Operator Outcome</h2>
+          <p>
+            Adjusters and operations teams can understand both the claim recommendation and the
+            orchestration path without leaving the same product surface.
+          </p>
+          <div class="cta-row">
+            <a class="button secondary" href="/support">Contact Support</a>
+          </div>
+        </article>
+      </section>
+    </div>
+  </body>
+</html>

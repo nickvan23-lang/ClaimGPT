@@ -30,16 +30,21 @@ Suggested steps:
    - `GET /support`
    - `POST /mcp`
 
+Current project status:
+
+- GitHub repo is live
+- Render service is live on the Render subdomain
+- `claim-gpt.com` and `www.claim-gpt.com` DNS records are configured in Cloudflare
+- Final cutover is complete once the custom domain and machine-readable routes are verified from a browser profile that is not blocking them
+
 ## Public release checklist
 
 After deployment, do these in order:
 
-1. Put the final legal text in `privacy.html` and `support.html`.
-2. Set the real production domain env vars.
-3. Validate the live HTTPS routes.
-4. Test the app in ChatGPT Developer Mode against the production URL.
-5. Capture screenshots from the production deployment.
-6. Submit the app in the OpenAI Platform Dashboard.
+1. Validate the live HTTPS routes on the custom domain.
+2. Test the app in ChatGPT Developer Mode against the production URL.
+3. Capture screenshots from the production deployment.
+4. Submit the app in the OpenAI Platform Dashboard.
 
 ## Exact `claim-gpt.com` values
 

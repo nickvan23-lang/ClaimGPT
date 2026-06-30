@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ClaimGPT</title>
+    <title>ClaimGPT | Casualty Claims Intelligence</title>
     <meta
       name="description"
-      content="ClaimGPT is an AI-assisted insurance claim triage app that turns intake narratives into structured next steps, documentation gaps, and adjuster-ready summaries."
+      content="ClaimGPT is an AI-assisted casualty claims intelligence app that turns FNOL and medical inputs into severity, reserve, litigation, fraud, and adjuster-action recommendations."
     />
     <meta name="application-name" content="ClaimGPT" />
     <meta name="theme-color" content="#a5441d" />
@@ -14,7 +14,7 @@
     <meta property="og:title" content="ClaimGPT" />
     <meta
       property="og:description"
-      content="AI-assisted insurance claim triage for faster intake decisions and clearer adjuster handoff."
+      content="AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og-card.svg" />
@@ -22,7 +22,7 @@
     <meta name="twitter:title" content="ClaimGPT" />
     <meta
       name="twitter:description"
-      content="AI-assisted insurance claim triage for faster intake decisions and clearer adjuster handoff."
+      content="AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions."
     />
     <meta name="twitter:image" content="/og-card.svg" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -33,7 +33,7 @@
         "@type": "SoftwareApplication",
         "name": "ClaimGPT",
         "applicationCategory": "BusinessApplication",
-        "description": "AI-assisted insurance claim triage for faster intake decisions and clearer adjuster handoff.",
+        "description": "AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions.",
         "operatingSystem": "Web",
         "offers": {
           "@type": "Offer",
@@ -200,6 +200,59 @@
         margin-top: 18px;
       }
 
+      .showcase {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .architecture-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .strip-pill {
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 253, 249, 0.86);
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .signal-board {
+        display: grid;
+        gap: 12px;
+      }
+
+      .signal-row {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,238,229,0.9));
+      }
+
+      .signal-row strong {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(165, 68, 29, 0.1);
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
       .feature {
         background: rgba(255, 253, 249, 0.82);
         border: 1px solid var(--line);
@@ -226,6 +279,7 @@
 
       @media (max-width: 860px) {
         .hero,
+        .showcase,
         .grid,
         .nav {
           grid-template-columns: 1fr;
@@ -242,6 +296,7 @@
       <div class="nav">
         <div class="brand">ClaimGPT</div>
         <div class="nav-links">
+          <a href="/enterprise">Enterprise</a>
           <a href="/privacy">Privacy</a>
           <a href="/support">Support</a>
           <a href="/status">Status</a>
@@ -250,15 +305,16 @@
 
       <section class="hero">
         <div class="panel">
-          <p class="eyebrow">Insurance claim triage</p>
-          <h1>AI-assisted claim review for faster intake decisions.</h1>
+          <p class="eyebrow">Claims intelligence + orchestration</p>
+          <h1>AI-assisted claim review with an enterprise automation branch.</h1>
           <p class="lede">
-            ClaimGPT turns raw claim narratives into structured next steps, missing-document flags,
-            escalation cues, and adjuster-ready summaries inside ChatGPT.
+            ClaimGPT turns raw claim narratives into structured next steps, reserve posture,
+            escalation cues, and adjuster-ready summaries inside ChatGPT, then branches into
+            enterprise MCP orchestration for Guidewire, Duck Creek, and multimodal document pipelines.
           </p>
           <div class="cta-row">
             <a class="button primary" href="/support">Request Access</a>
-            <a class="button secondary" href="/privacy">Review Privacy Policy</a>
+            <a class="button secondary" href="/enterprise">View Enterprise Branch</a>
           </div>
         </div>
 
@@ -268,12 +324,12 @@
             <p>Analyzes claim narratives and surfaces triage recommendations without mutating external systems.</p>
           </div>
           <div class="stack-card">
-            <strong>Designed for</strong>
-            <p>Property intake, bodily injury escalation review, documentation gap detection, and adjuster handoff prep.</p>
+            <strong>Enterprise branch</strong>
+            <p>ECO-AI orchestration adds FNOL routing, document workflows, policy interpretation, and settlement sequencing.</p>
           </div>
           <div class="stack-card">
             <strong>Current release posture</strong>
-            <p>Review-safe, read-only starter suitable for deployment and OpenAI app submission preparation.</p>
+            <p>Read-only, review-safe deployment with public pages, submission assets, and a visible enterprise architecture branch.</p>
           </div>
         </div>
       </section>
@@ -281,20 +337,62 @@
       <section class="grid">
         <article class="feature">
           <h2>Structured Triage</h2>
-          <p>Turns freeform narratives into consistent severity, status, and follow-up signals.</p>
+          <p>Turns freeform narratives into consistent severity, reserve, litigation, fraud, and follow-up signals.</p>
         </article>
         <article class="feature">
-          <h2>Missing Information</h2>
-          <p>Highlights documentation gaps early so adjusters spend less time on avoidable back-and-forth.</p>
+          <h2>Enterprise Orchestration</h2>
+          <p>Maps the same experience into MCP tools, workflow stages, and core-system sequencing for regulated carriers.</p>
         </article>
         <article class="feature">
           <h2>Adjuster Handoff</h2>
-          <p>Presents a workspace that helps human reviewers see risk, confidence, and next actions quickly.</p>
+          <p>Presents a workspace that helps human reviewers see risk, confidence, next actions, and human-in-the-loop boundaries quickly.</p>
+        </article>
+      </section>
+
+      <section class="showcase">
+        <article class="panel">
+          <p class="eyebrow">Live Enterprise UX</p>
+          <h2>ClaimGPT now visibly branches into ECO-AI orchestration on the public site.</h2>
+          <p class="lede" style="font-size:17px;max-width:none;">
+            The same product now shows both layers: claim-level intelligence for adjusters and a carrier-grade
+            orchestration pattern for FNOL intake, multimodal document parsing, policy lookups, fraud analytics,
+            and reserve-safe write-back sequencing.
+          </p>
+          <div class="architecture-strip">
+            <span class="strip-pill">MCP Tooling</span>
+            <span class="strip-pill">Guidewire / Duck Creek</span>
+            <span class="strip-pill">Human-in-the-Loop</span>
+            <span class="strip-pill">Traceable Citations</span>
+            <span class="strip-pill">Workflow Stages</span>
+          </div>
+          <div class="cta-row">
+            <a class="button primary" href="/enterprise">Open Enterprise View</a>
+            <a class="button secondary" href="/status">Check Live Status</a>
+          </div>
+        </article>
+
+        <article class="panel signal-board">
+          <div class="signal-row">
+            <strong>FNOL</strong>
+            <p>Parse intake files, verify policy state, and route fast-track versus complex adjudication.</p>
+          </div>
+          <div class="signal-row">
+            <strong>Review</strong>
+            <p>Reconstruct chronology, compare evidence against FNOL, and surface contradictions or missing releases.</p>
+          </div>
+          <div class="signal-row">
+            <strong>Adjudicate</strong>
+            <p>Map evidence to policy language, frame exclusions as review recommendations, and keep decisions non-binding.</p>
+          </div>
+          <div class="signal-row">
+            <strong>Settle</strong>
+            <p>Draft communications, aggregate verified damages, and sequence reserve or status recommendations safely.</p>
+          </div>
         </article>
       </section>
 
       <div class="footer">
-        <p>ClaimGPT is being prepared for public release on claim-gpt.com. The publication name, legal pages, and deployment domain should be finalized before submission.</p>
+        <p>ClaimGPT is being prepared for public release on claim-gpt.com, including an enterprise branch for ECO-AI orchestration architecture and carrier-system integration workflows.</p>
       </div>
     </div>
   </body>
