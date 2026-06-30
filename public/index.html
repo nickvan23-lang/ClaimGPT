@@ -3,27 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ClaimGPT | Casualty Claims Intelligence</title>
-    <meta
-      name="description"
-      content="ClaimGPT is an AI-assisted casualty claims intelligence app that turns FNOL and medical inputs into severity, reserve, litigation, fraud, and adjuster-action recommendations."
-    />
+    <title>ClaimGPT — ECO-AI Enterprise Claims Orchestration</title>
+    <meta name="description" content="ECO-AI is an agentic AI co-pilot for insurance claims adjusters. MCP-powered FNOL triage, fraud analytics, policy analysis, and settlement workflows — built for P&C and Life & Health carriers." />
     <meta name="application-name" content="ClaimGPT" />
     <meta name="theme-color" content="#a5441d" />
     <link rel="canonical" href="/" />
-    <meta property="og:title" content="ClaimGPT" />
-    <meta
-      property="og:description"
-      content="AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions."
-    />
+    <meta property="og:title" content="ClaimGPT — ECO-AI Enterprise Claims Orchestration" />
+    <meta property="og:description" content="Agentic AI co-pilot for insurance adjusters. MCP-powered triage, fraud scoring, and straight-through processing." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og-card.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="ClaimGPT" />
-    <meta
-      name="twitter:description"
-      content="AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions."
-    />
+    <meta name="twitter:title" content="ClaimGPT — ECO-AI" />
+    <meta name="twitter:description" content="Agentic AI co-pilot for insurance claims adjusters." />
     <meta name="twitter:image" content="/og-card.svg" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -31,369 +22,273 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "ClaimGPT",
+        "name": "ClaimGPT ECO-AI",
         "applicationCategory": "BusinessApplication",
-        "description": "AI-assisted casualty claims intelligence for faster severity, reserve, and adjuster decisions.",
+        "description": "Agentic AI co-pilot for insurance claims adjusters — MCP-powered FNOL triage, fraud analytics, and settlement workflows.",
         "operatingSystem": "Web",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        }
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }
     </script>
     <style>
       :root {
-        --paper: #f6efe6;
-        --card: rgba(255, 253, 249, 0.92);
+        --paper: #f5ede3;
+        --card: rgba(255,253,249,0.92);
         --ink: #1c2430;
         --muted: #5e6678;
-        --line: rgba(28, 36, 48, 0.12);
+        --line: rgba(28,36,48,0.1);
         --accent: #a5441d;
         --accent-2: #d47c3c;
-        --deep: #231f20;
+        --dark: #151c26;
+        --mono: "SF Mono", "Menlo", "Consolas", monospace;
         font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
         color: var(--ink);
       }
-
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       body {
-        margin: 0;
-        min-height: 100vh;
+        margin: 0; min-height: 100vh;
         background:
-          radial-gradient(circle at top left, rgba(212, 124, 60, 0.16), transparent 32%),
-          linear-gradient(180deg, #faf5ee 0%, #efe3d4 100%);
+          radial-gradient(circle at top left, rgba(212,124,60,0.14), transparent 32%),
+          linear-gradient(180deg, #faf3ea 0%, #ede0cd 100%);
       }
+      h1, h2, h3, p { margin: 0; }
+      a { color: inherit; }
 
-      .shell {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 28px 18px 52px;
+      .shell { max-width: 1100px; margin: 0 auto; padding: 28px 18px 64px; }
+
+      /* Nav */
+      nav {
+        display: grid; grid-template-columns: 1fr auto;
+        align-items: center; gap: 18px; margin-bottom: 36px;
       }
+      .brand { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; }
+      .brand-sub { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-family: var(--mono); margin-left: 10px; }
+      .nav-links { display: flex; gap: 18px; font-size: 14px; }
 
-      .nav,
-      .hero,
-      .grid,
-      .footer {
-        display: grid;
-        gap: 18px;
-      }
-
-      .nav {
-        grid-template-columns: 1fr auto;
-        align-items: center;
-      }
-
-      .brand {
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-      }
-
-      .nav-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        font-size: 14px;
-      }
-
-      a {
-        color: inherit;
-      }
-
+      /* Hero */
       .hero {
-        grid-template-columns: 1.1fr 0.9fr;
-        align-items: stretch;
-        margin-top: 22px;
+        display: grid; grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px; align-items: stretch; margin-bottom: 18px;
       }
-
       .panel {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 26px;
-        padding: 26px;
-        box-shadow: 0 22px 46px rgba(43, 35, 24, 0.1);
+        background: var(--card); border: 1px solid var(--line);
+        border-radius: 26px; padding: 28px;
+        box-shadow: 0 22px 46px rgba(43,35,24,0.09);
         backdrop-filter: blur(10px);
       }
-
       .eyebrow {
-        margin: 0 0 10px;
-        font-size: 11px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
+        margin: 0 0 10px; font-size: 11px; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--accent); font-weight: 700; font-family: var(--mono);
       }
-
-      h1, h2, p {
-        margin: 0;
+      h1 { font-size: 52px; line-height: 0.96; max-width: 9ch; margin-bottom: 16px; }
+      .lede { color: var(--muted); font-size: 17px; line-height: 1.55; max-width: 36rem; margin-bottom: 24px; }
+      .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        min-height: 46px; padding: 0 20px; border-radius: 999px;
+        border: 1px solid transparent; text-decoration: none;
+        font-size: 14px; font-weight: 700; font-family: var(--mono);
       }
+      .btn.primary { background: var(--accent); color: #fff; }
+      .btn.secondary { border-color: var(--line); background: #fff; color: var(--ink); }
 
-      h1 {
-        font-size: 54px;
-        line-height: 0.96;
-        max-width: 8ch;
-      }
-
-      .lede {
-        margin-top: 14px;
-        color: var(--muted);
-        font-size: 18px;
-        line-height: 1.5;
-        max-width: 34rem;
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 22px;
-      }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 18px;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
-      }
-
-      .button.primary {
-        background: var(--accent);
-        color: #fff;
-      }
-
-      .button.secondary {
-        border-color: var(--line);
-        background: #fff;
-      }
-
+      /* Mini card stack (hero right) */
+      .mini-stack { display: flex; flex-direction: column; gap: 12px; }
       .mini-card {
-        display: grid;
-        gap: 14px;
-        grid-auto-rows: min-content;
-      }
-
-      .stack-card {
-        padding: 16px;
-        border-radius: 18px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(245,238,229,0.85));
+        padding: 16px 18px; border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,238,229,0.85));
         border: 1px solid var(--line);
       }
+      .mini-card strong { display: block; margin-bottom: 6px; font-size: 14px; }
+      .mini-card p { color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-      .stack-card strong {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 15px;
+      /* Tools grid */
+      .tools-header { margin: 36px 0 16px; }
+      .tools-header h2 { font-size: 28px; margin-bottom: 6px; }
+      .tools-header p { color: var(--muted); font-size: 15px; }
+      .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
+      .tool-card {
+        background: rgba(255,253,249,0.84); border: 1px solid var(--line);
+        border-radius: 20px; padding: 20px;
       }
-
-      .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin-top: 18px;
+      .tool-name {
+        font-size: 12px; font-family: var(--mono); font-weight: 700;
+        color: var(--accent); margin-bottom: 6px;
+        letter-spacing: 0.04em;
       }
+      .tool-card h3 { font-size: 17px; margin-bottom: 8px; }
+      .tool-card p { color: var(--muted); font-size: 13px; line-height: 1.55; }
 
-      .showcase {
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 18px;
-        margin-top: 18px;
+      /* Compliance section */
+      .compliance {
+        background: var(--dark); border-radius: 24px; padding: 32px;
+        color: rgba(255,255,255,0.85); margin-bottom: 18px;
       }
+      .compliance h2 { font-size: 26px; color: #fff; margin-bottom: 8px; }
+      .compliance .sub { color: rgba(255,255,255,0.5); font-size: 15px; margin-bottom: 24px; }
+      .compliance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .comp-item { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
+      .comp-label { font-size: 10px; font-family: var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+      .comp-item p { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.75); }
 
-      .architecture-strip {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 18px;
+      /* Workflow */
+      .workflow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 36px; }
+      .step {
+        background: rgba(255,253,249,0.84); border: 1px solid var(--line);
+        border-radius: 18px; padding: 18px;
+        position: relative;
       }
-
-      .strip-pill {
-        padding: 10px 12px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: rgba(255, 253, 249, 0.86);
-        font-size: 13px;
-        color: var(--muted);
+      .step-num {
+        font-size: 11px; font-family: var(--mono); font-weight: 700;
+        color: var(--accent); letter-spacing: 0.1em; margin-bottom: 8px;
       }
+      .step h3 { font-size: 16px; margin-bottom: 6px; }
+      .step p { color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-      .signal-board {
-        display: grid;
-        gap: 12px;
+      /* Footer */
+      footer { padding: 20px 0 0; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+      @media (max-width: 900px) {
+        .hero, .tools-grid, .compliance-grid, .workflow { grid-template-columns: 1fr; }
+        h1 { font-size: 40px; }
       }
-
-      .signal-row {
-        display: grid;
-        grid-template-columns: 118px 1fr;
-        gap: 12px;
-        align-items: start;
-        padding: 14px;
-        border-radius: 18px;
-        border: 1px solid var(--line);
-        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,238,229,0.9));
-      }
-
-      .signal-row strong {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 34px;
-        padding: 0 10px;
-        border-radius: 999px;
-        background: rgba(165, 68, 29, 0.1);
-        color: var(--accent);
-        font-size: 12px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .feature {
-        background: rgba(255, 253, 249, 0.82);
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 20px;
-      }
-
-      .feature h2 {
-        margin-bottom: 8px;
-        font-size: 20px;
-      }
-
-      .feature p {
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
-      .footer {
-        margin-top: 20px;
-        padding: 18px 4px 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      @media (max-width: 860px) {
-        .hero,
-        .showcase,
-        .grid,
-        .nav {
-          grid-template-columns: 1fr;
-        }
-
-        h1 {
-          font-size: 40px;
-        }
+      @media (max-width: 640px) {
+        nav { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
     <div class="shell">
-      <div class="nav">
-        <div class="brand">ClaimGPT</div>
+      <nav>
+        <div>
+          <span class="brand">ClaimGPT</span>
+          <span class="brand-sub">ECO-AI</span>
+        </div>
         <div class="nav-links">
-          <a href="/enterprise">Enterprise</a>
           <a href="/privacy">Privacy</a>
           <a href="/support">Support</a>
           <a href="/status">Status</a>
         </div>
-      </div>
+      </nav>
 
       <section class="hero">
         <div class="panel">
-          <p class="eyebrow">Claims intelligence + orchestration</p>
-          <h1>AI-assisted claim review with an enterprise automation branch.</h1>
+          <p class="eyebrow">Enterprise Claims Orchestration AI</p>
+          <h1>AI co-pilot for insurance claim adjudication.</h1>
           <p class="lede">
-            ClaimGPT turns raw claim narratives into structured next steps, reserve posture,
-            escalation cues, and adjuster-ready summaries inside ChatGPT, then branches into
-            enterprise MCP orchestration for Guidewire, Duck Creek, and multimodal document pipelines.
+            ECO-AI goes beyond a basic chat wrapper. It is an agentic MCP-powered platform that triages FNOL filings, scores fraud risk, interprets policy language, and prepares settlement packages — all inside ChatGPT, governed by strict NAIC and HIPAA compliance guardrails.
           </p>
           <div class="cta-row">
-            <a class="button primary" href="/support">Request Access</a>
-            <a class="button secondary" href="/enterprise">View Enterprise Branch</a>
+            <a class="btn primary" href="/support">Request Enterprise Access</a>
+            <a class="btn secondary" href="/privacy">Privacy Policy</a>
           </div>
         </div>
-
-        <div class="panel mini-card">
-          <div class="stack-card">
-            <strong>What it does</strong>
-            <p>Analyzes claim narratives and surfaces triage recommendations without mutating external systems.</p>
+        <div class="panel mini-stack">
+          <div class="mini-card">
+            <strong>MCP-Powered Agentic Workflow</strong>
+            <p>7 specialized MCP tools orchestrate the full claims lifecycle — from FNOL triage to settlement drafts — without leaving ChatGPT.</p>
           </div>
-          <div class="stack-card">
-            <strong>Enterprise branch</strong>
-            <p>ECO-AI orchestration adds FNOL routing, document workflows, policy interpretation, and settlement sequencing.</p>
+          <div class="mini-card">
+            <strong>Compliance-First Architecture</strong>
+            <p>NAIC AI Model Bulletin, HIPAA, and GLBA guardrails are baked into every tool. Human-in-the-loop authorization required for all binding actions.</p>
           </div>
-          <div class="stack-card">
-            <strong>Current release posture</strong>
-            <p>Read-only, review-safe deployment with public pages, submission assets, and a visible enterprise architecture branch.</p>
+          <div class="mini-card">
+            <strong>Straight-Through Processing Ready</strong>
+            <p>Low-risk, fully-documented claims are routed FAST_TRACK. Complex or high-fraud claims are escalated for adjuster adjudication.</p>
           </div>
         </div>
       </section>
 
-      <section class="grid">
-        <article class="feature">
-          <h2>Structured Triage</h2>
-          <p>Turns freeform narratives into consistent severity, reserve, litigation, fraud, and follow-up signals.</p>
-        </article>
-        <article class="feature">
-          <h2>Enterprise Orchestration</h2>
-          <p>Maps the same experience into MCP tools, workflow stages, and core-system sequencing for regulated carriers.</p>
-        </article>
-        <article class="feature">
-          <h2>Adjuster Handoff</h2>
-          <p>Presents a workspace that helps human reviewers see risk, confidence, next actions, and human-in-the-loop boundaries quickly.</p>
-        </article>
-      </section>
-
-      <section class="showcase">
-        <article class="panel">
-          <p class="eyebrow">Live Enterprise UX</p>
-          <h2>ClaimGPT now visibly branches into ECO-AI orchestration on the public site.</h2>
-          <p class="lede" style="font-size:17px;max-width:none;">
-            The same product now shows both layers: claim-level intelligence for adjusters and a carrier-grade
-            orchestration pattern for FNOL intake, multimodal document parsing, policy lookups, fraud analytics,
-            and reserve-safe write-back sequencing.
-          </p>
-          <div class="architecture-strip">
-            <span class="strip-pill">MCP Tooling</span>
-            <span class="strip-pill">Guidewire / Duck Creek</span>
-            <span class="strip-pill">Human-in-the-Loop</span>
-            <span class="strip-pill">Traceable Citations</span>
-            <span class="strip-pill">Workflow Stages</span>
-          </div>
-          <div class="cta-row">
-            <a class="button primary" href="/enterprise">Open Enterprise View</a>
-            <a class="button secondary" href="/status">Check Live Status</a>
-          </div>
-        </article>
-
-        <article class="panel signal-board">
-          <div class="signal-row">
-            <strong>FNOL</strong>
-            <p>Parse intake files, verify policy state, and route fast-track versus complex adjudication.</p>
-          </div>
-          <div class="signal-row">
-            <strong>Review</strong>
-            <p>Reconstruct chronology, compare evidence against FNOL, and surface contradictions or missing releases.</p>
-          </div>
-          <div class="signal-row">
-            <strong>Adjudicate</strong>
-            <p>Map evidence to policy language, frame exclusions as review recommendations, and keep decisions non-binding.</p>
-          </div>
-          <div class="signal-row">
-            <strong>Settle</strong>
-            <p>Draft communications, aggregate verified damages, and sequence reserve or status recommendations safely.</p>
-          </div>
-        </article>
-      </section>
-
-      <div class="footer">
-        <p>ClaimGPT is being prepared for public release on claim-gpt.com, including an enterprise branch for ECO-AI orchestration architecture and carrier-system integration workflows.</p>
+      <div class="tools-header">
+        <h2>Seven integrated MCP tools</h2>
+        <p>ECO-AI exposes a complete, structured toolset — each tool is a governed API call, not a hallucination.</p>
       </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">query_policy_system</div>
+          <h3>Policy Verification</h3>
+          <p>Retrieves live policy status, coverage limits, deductibles, and active endorsements before any triage decision.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">extract_document_data</div>
+          <h3>Document Intelligence</h3>
+          <p>Sends medical records, repair estimates, and police reports through a multimodal parsing engine, returning validated structured JSON.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">run_fraud_analytics</div>
+          <h3>Fraud Risk Scoring</h3>
+          <p>Produces an anomaly risk score and SIU referral recommendation based on claim data, narrative analysis, and prior claim history.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">update_claim_status</div>
+          <h3>Claim Status Updates</h3>
+          <p>Executes state-changing API calls to update reserves and claim status — with prerequisite validation and adjuster authorization gates.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">draft_communication</div>
+          <h3>Compliant Drafts</h3>
+          <p>Generates settlement letters, RFIs, reservation of rights notices, and acknowledgments — flagged for adjuster review before transmission.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">run_fnol_triage</div>
+          <h3>Full FNOL Orchestration</h3>
+          <p>Stage 1 workflow: verifies policy, scores fraud, identifies missing documents, sets routing, and delivers a triage summary in one call.</p>
+        </div>
+      </div>
+
+      <div class="compliance">
+        <h2>Built for regulated environments</h2>
+        <p class="sub">NAIC · HIPAA · GLBA · Human-in-the-Loop by design</p>
+        <div class="compliance-grid">
+          <div class="comp-item">
+            <div class="comp-label">NAIC AI Model Bulletin</div>
+            <p>ECO-AI never makes unilateral coverage denials. Every output carries citations to source documents and requires licensed adjuster authorization for binding decisions.</p>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">HIPAA / GLBA Data Privacy</div>
+            <p>PII and PHI are not logged or repeated unnecessarily. Claims are referenced by ID. Enterprise deployments should ring-fence data from foundational model training.</p>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Prompt Injection Protection</div>
+            <p>Structured MCP tool schemas and explicit output formats reduce hallucination risk and limit the attack surface for adversarial inputs in claim narratives.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin:10px 0 16px">
+        <h2 style="font-size:26px;margin-bottom:6px">Four-stage claims workflow</h2>
+        <p style="color:var(--muted);font-size:15px;margin-bottom:16px">ECO-AI follows the same lifecycle structure as a human adjuster — but at machine speed.</p>
+      </div>
+      <div class="workflow">
+        <div class="step">
+          <div class="step-num">STAGE 01</div>
+          <h3>FNOL & Triage</h3>
+          <p>Policy verification, fraud scoring, document gap analysis, and routing to FAST_TRACK or COMPLEX_ADJUDICATION.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">STAGE 02</div>
+          <h3>Investigation</h3>
+          <p>Multimodal document parsing, chronological timeline construction, and cross-referencing for narrative inconsistencies.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">STAGE 03</div>
+          <h3>Policy Analysis</h3>
+          <p>Evidence / Policy Clause / Analysis / Conclusion structured output for every coverage question an adjuster needs to answer.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">STAGE 04</div>
+          <h3>Settlement</h3>
+          <p>Damage aggregation, reserve calculation, compliant communication drafts, and adjuster-gated status updates.</p>
+        </div>
+      </div>
+
+      <footer>
+        <p>ClaimGPT ECO-AI — claim-gpt.com</p>
+        <div style="display:flex;gap:18px">
+          <a href="/privacy">Privacy</a>
+          <a href="/support">Support</a>
+          <a href="/status">API Status</a>
+        </div>
+      </footer>
     </div>
   </body>
 </html>

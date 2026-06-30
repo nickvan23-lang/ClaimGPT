@@ -3,979 +3,660 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ClaimGPT OCCIE Workspace</title>
+    <title>ECO-AI | ClaimGPT</title>
     <style>
       :root {
-        --bg: #f2ede4;
-        --panel: rgba(255, 252, 247, 0.94);
-        --card: #fffdfa;
-        --ink: #1a2230;
-        --muted: #5d6677;
-        --line: rgba(26, 34, 48, 0.1);
-        --accent: #9f471d;
-        --accent-2: #c87a33;
-        --green: #0e6f4b;
-        --amber: #9a6500;
-        --red: #a72626;
-        --slate: #2c405f;
-        font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
-        color: var(--ink);
+        --header: #151c26;
+        --sidebar: #1a2233;
+        --sidebar-border: rgba(255,255,255,0.07);
+        --bg: #f0ebe2;
+        --card: #fffdf9;
+        --ink: #1c2430;
+        --muted: #5e6678;
+        --line: rgba(28,36,48,0.1);
+        --accent: #a5441d;
+        --fast-c: #1a5c36; --fast-bg: #e8f5ee; --fast-border: #a3d4b8;
+        --complex-c: #8a3010; --complex-bg: #fff0eb; --complex-border: #f0b499;
+        --low-c: #1a5c36; --low-bg: #e8f5ee; --low-border: #a3d4b8;
+        --mod-c: #7a4a00; --mod-bg: #fff8e8; --mod-border: #f0d080;
+        --high-c: #8a1c1c; --high-bg: #fff0f0; --high-border: #f0aaaa;
+        --mono: "SF Mono", "Menlo", "Consolas", monospace;
       }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { height: 100%; overflow: hidden; }
+      body { display: flex; flex-direction: column; font-family: Georgia, "Iowan Old Style", serif; background: var(--bg); color: var(--ink); font-size: 14px; }
 
-      * {
-        box-sizing: border-box;
+      .ws-header {
+        display: grid; grid-template-columns: auto 1fr auto;
+        align-items: center; gap: 16px; padding: 0 18px; height: 52px;
+        background: var(--header); color: #fff; flex-shrink: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
       }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        padding: 16px;
-        background:
-          radial-gradient(circle at top left, rgba(159, 71, 29, 0.18), transparent 35%),
-          linear-gradient(180deg, #f8f2ea 0%, #eee4d6 100%);
+      .header-brand { display: flex; align-items: baseline; gap: 6px; }
+      .brand-name { font-size: 16px; font-weight: 700; letter-spacing: 0.06em; }
+      .brand-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); font-family: var(--mono); }
+      .header-claim { display: flex; align-items: center; gap: 12px; }
+      .hdr-claim-id { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.5); }
+      .hdr-claim-type { font-size: 13px; color: rgba(255,255,255,0.8); }
+      .routing-pill {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 999px; font-size: 11px;
+        font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--mono);
       }
+      .routing-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+      .r-fast { background: var(--fast-bg); color: var(--fast-c); border: 1px solid var(--fast-border); }
+      .r-complex { background: var(--complex-bg); color: var(--complex-c); border: 1px solid var(--complex-border); }
+      .r-pending { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); }
 
-      main {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 22px;
-        border-radius: 26px;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        box-shadow: 0 22px 50px rgba(59, 44, 25, 0.12);
-        backdrop-filter: blur(10px);
+      .ws-body { display: flex; flex: 1; overflow: hidden; }
+
+      .sidebar {
+        width: 228px; flex-shrink: 0; background: var(--sidebar);
+        border-right: 1px solid var(--sidebar-border);
+        display: flex; flex-direction: column; overflow-y: auto;
       }
+      .sb-sec { padding: 14px 16px; border-bottom: 1px solid var(--sidebar-border); }
+      .sb-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); font-family: var(--mono); margin-bottom: 10px; }
+      .sb-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+      .sb-key { font-size: 11px; color: rgba(255,255,255,0.38); flex-shrink: 0; }
+      .sb-val { font-size: 12px; color: rgba(255,255,255,0.82); font-family: var(--mono); text-align: right; max-width: 128px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .sb-val.accent { color: #f0a070; }
+      .active-status { color: #6dda96; }
+      .lapsed-status { color: #f08080; }
 
-      .stack {
-        display: grid;
-        gap: 16px;
+      .gauge-wrap { margin: 2px 0 8px; }
+      .gauge-scores { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+      .gauge-score { font-size: 22px; font-weight: 700; color: #fff; font-family: var(--mono); }
+      .gauge-band { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--mono); }
+      .gauge-track { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; margin-bottom: 5px; }
+      .gauge-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+      .g-low { background: #4caf76; } .g-mod { background: #e8a020; } .g-high { background: #e04040; }
+      .b-low { color: #6dda96; } .b-mod { color: #e8a020; } .b-high { color: #f07070; }
+      .gauge-note { font-size: 10px; color: rgba(255,255,255,0.25); font-family: var(--mono); }
+
+      .reserve-amt { font-size: 22px; font-weight: 700; color: #fff; font-family: var(--mono); }
+      .reserve-note { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 2px; font-family: var(--mono); }
+
+      .sb-actions { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+      .sb-btn {
+        width: 100%; padding: 9px 12px; border-radius: 8px; border: 0;
+        font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+        transition: opacity 0.15s;
       }
+      .sb-btn:hover { opacity: 0.85; }
+      .sb-btn.primary { background: var(--accent); color: #fff; }
+      .sb-btn.ghost { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.1); }
+      .sb-note { font-size: 10px; color: rgba(255,255,255,0.2); text-align: center; font-family: var(--mono); margin-top: 4px; }
 
-      .hero,
-      .stats,
-      .grid,
-      .panel-grid {
-        display: grid;
-        gap: 14px;
+      .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+      .empty-state {
+        flex: 1; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 16px; padding: 40px; text-align: center;
       }
-
-      .hero {
-        grid-template-columns: 1.35fr 0.65fr;
-        align-items: start;
+      .empty-icon { font-size: 44px; opacity: 0.2; }
+      .empty-title { font-size: 21px; }
+      .empty-body { color: var(--muted); line-height: 1.65; max-width: 360px; font-size: 14px; }
+      .empty-btn {
+        margin-top: 6px; padding: 11px 24px; border-radius: 999px; border: 0;
+        background: var(--accent); color: #fff; font: inherit; font-size: 14px;
+        font-weight: 700; cursor: pointer; transition: opacity 0.15s;
       }
+      .empty-btn:hover { opacity: 0.85; }
 
-      .eyebrow {
-        margin: 0 0 8px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--accent);
+      .workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+      .tab-nav { display: flex; padding: 12px 18px 0; border-bottom: 1px solid var(--line); background: var(--card); flex-shrink: 0; }
+      .tab-btn {
+        padding: 8px 16px; border: 0; background: none; font: inherit;
+        font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer;
+        border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s;
       }
+      .tab-btn:hover { color: var(--ink); }
+      .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-      h1,
-      h2,
-      h3,
-      p {
-        margin: 0;
+      .tab-panels { flex: 1; overflow-y: auto; }
+      .tab-panel { display: none; padding: 18px; flex-direction: column; gap: 14px; }
+      .tab-panel.active { display: flex; }
+
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+      .card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-family: var(--mono); }
+      .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+      .stat { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+      .stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-family: var(--mono); }
+      .stat-value { font-size: 18px; font-weight: 700; font-family: var(--mono); }
+
+      .summary-banner { background: linear-gradient(135deg, rgba(165,68,29,0.07), rgba(255,255,255,0.85)); border: 1px solid rgba(165,68,29,0.14); border-radius: 14px; padding: 14px 18px; line-height: 1.65; }
+
+      .action-list { display: flex; flex-direction: column; gap: 8px; }
+      .action-item { display: flex; gap: 10px; align-items: start; padding: 10px 13px; background: var(--bg); border-radius: 10px; border: 1px solid var(--line); line-height: 1.5; font-size: 13px; }
+      .action-num { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); min-width: 20px; padding-top: 1px; flex-shrink: 0; }
+
+      .timeline { display: flex; flex-direction: column; }
+      .tl-row { display: grid; grid-template-columns: 94px 1fr auto; gap: 10px; align-items: start; padding: 9px 0; border-bottom: 1px solid var(--line); }
+      .tl-row:last-child { border-bottom: none; }
+      .tl-date { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 2px; }
+      .tl-event { font-size: 13px; line-height: 1.4; }
+      .tl-high { color: var(--accent); font-weight: 700; }
+      .tl-src { font-size: 10px; color: var(--muted); font-family: var(--mono); white-space: nowrap; }
+
+      table { width: 100%; border-collapse: collapse; font-size: 13px; }
+      th { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 10px 8px; font-family: var(--mono); font-weight: 600; }
+      td { padding: 9px 10px; border-top: 1px solid var(--line); }
+      .cov-yes { color: var(--low-c); font-weight: 700; }
+      .cov-no { color: var(--muted); }
+      .mono { font-family: var(--mono); }
+
+      .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tag { padding: 4px 10px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+
+      .pill { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; font-family: var(--mono); white-space: nowrap; }
+      .p-low { background: var(--low-bg); color: var(--low-c); border: 1px solid var(--low-border); }
+      .p-mod { background: var(--mod-bg); color: var(--mod-c); border: 1px solid var(--mod-border); }
+      .p-high { background: var(--high-bg); color: var(--high-c); border: 1px solid var(--high-border); }
+
+      .anomaly-list { display: flex; flex-direction: column; gap: 8px; }
+      .anomaly { display: grid; grid-template-columns: auto 1fr; gap: 10px; padding: 11px 13px; border-radius: 10px; border: 1px solid; }
+      .anomaly.high { background: var(--high-bg); border-color: var(--high-border); }
+      .anomaly.moderate { background: var(--mod-bg); border-color: var(--mod-border); }
+      .anomaly.low { background: var(--low-bg); border-color: var(--low-border); }
+      .anom-signal { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+      .anom-detail { font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+      .doc-list { display: flex; flex-direction: column; gap: 6px; }
+      .doc-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); }
+      .doc-icon { width: 20px; height: 20px; border-radius: 4px; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+      .doc-icon.req { border-color: var(--high-c); color: var(--high-c); }
+      .doc-icon.opt { border-color: var(--mod-c); color: var(--mod-c); }
+      .doc-name { font-size: 13px; font-weight: 600; }
+      .doc-meta { font-size: 11px; color: var(--muted); }
+
+      .res-breakdown { display: flex; flex-direction: column; }
+      .res-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+      .res-row:last-child { border-bottom: none; font-weight: 700; font-size: 15px; }
+      .res-label { color: var(--muted); }
+      .res-val { font-family: var(--mono); }
+
+      .comm-draft { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+      .comm-subject { font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+      .comm-body { white-space: pre-wrap; line-height: 1.65; font-size: 12px; font-family: var(--mono); }
+      .comm-warn { margin-top: 10px; padding: 8px 10px; background: var(--high-bg); border: 1px solid var(--high-border); border-radius: 6px; font-size: 11px; color: var(--high-c); font-weight: 600; }
+
+      .meta-bar { padding: 5px 18px; background: var(--card); border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); font-family: var(--mono); display: flex; justify-content: space-between; flex-shrink: 0; }
+
+      @media (max-width: 640px) {
+        .sidebar { width: 180px; }
+        .card-grid, .card-grid-3 { grid-template-columns: 1fr; }
       }
-
-      h1 {
-        font-size: 34px;
-        line-height: 1;
-      }
-
-      h2 {
-        font-size: 18px;
-        margin-bottom: 10px;
-      }
-
-      .subhead,
-      .copy,
-      .meta,
-      li {
-        color: var(--muted);
-      }
-
-      .subhead,
-      .copy,
-      li {
-        line-height: 1.5;
-      }
-
-      .summary {
-        margin-top: 12px;
-        padding: 16px 18px;
-        border-radius: 18px;
-        border: 1px solid rgba(159, 71, 29, 0.12);
-        background: linear-gradient(135deg, rgba(159, 71, 29, 0.1), rgba(255, 255, 255, 0.72));
-      }
-
-      .badge-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: flex-end;
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        padding: 9px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        border: 1px solid transparent;
-      }
-
-      .band-low,
-      .status-triage,
-      .status-new {
-        color: var(--green);
-        background: #edf9f3;
-        border-color: #b8e2cb;
-      }
-
-      .band-moderate,
-      .status-awaiting-docs,
-      .status-investigating {
-        color: var(--amber);
-        background: #fff7e7;
-        border-color: #f0d095;
-      }
-
-      .band-high,
-      .band-critical,
-      .status-escalated,
-      .status-adjuster-review {
-        color: var(--red);
-        background: #fff1f1;
-        border-color: #efb2b2;
-      }
-
-      .stats {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-
-      .stat,
-      .panel {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-      }
-
-      .stat {
-        padding: 14px;
-      }
-
-      .stat-label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .stat-value {
-        font-size: 22px;
-        font-weight: 700;
-      }
-
-      .grid {
-        grid-template-columns: 1.1fr 0.9fr;
-      }
-
-      .panel {
-        padding: 16px;
-      }
-
-      .panel-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      ul {
-        margin: 0;
-        padding-left: 18px;
-        display: grid;
-        gap: 8px;
-      }
-
-      .citations {
-        display: grid;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
-      .citation {
-        padding: 10px 12px;
-        border-radius: 14px;
-        border: 1px solid var(--line);
-        background: #fffaf4;
-        font-size: 13px;
-        line-height: 1.45;
-      }
-
-      .timeline {
-        display: grid;
-        gap: 10px;
-      }
-
-      .timeline-item {
-        padding: 12px 14px;
-        border-radius: 16px;
-        border: 1px solid var(--line);
-        background: #fffefb;
-      }
-
-      .timeline-item strong,
-      .plan-item strong {
-        display: block;
-        margin-bottom: 6px;
-        color: var(--ink);
-      }
-
-      .plan-list {
-        display: grid;
-        gap: 10px;
-      }
-
-      .plan-item {
-        padding: 12px 14px;
-        border-radius: 16px;
-        border: 1px solid rgba(159, 71, 29, 0.12);
-        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,241,231,0.92));
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      button {
-        border: 0;
-        border-radius: 999px;
-        padding: 11px 16px;
-        font: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .primary {
-        background: var(--accent);
-        color: #fff;
-      }
-
-      .secondary {
-        background: #201f24;
-        color: #fff;
-      }
-
-      .meta {
-        font-size: 13px;
-      }
-
-      @media (max-width: 900px) {
-        .hero,
-        .grid,
-        .panel-grid,
-        .stats {
-          grid-template-columns: 1fr;
-        }
-
-        .badge-row {
-          justify-content: flex-start;
-        }
+      @media (max-width: 500px) {
+        .sidebar { display: none; }
+        .ws-header { grid-template-columns: 1fr auto; }
       }
     </style>
   </head>
   <body>
-    <main class="stack">
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Omni-Casualty Claims Intelligence Engine</p>
-          <h1 id="headline">ClaimGPT OCCIE Workspace</h1>
-          <p class="subhead" id="subhead">
-            Casualty claims intelligence for triage, reserving, and red-flag review
-          </p>
-          <div class="summary">
-            <p class="copy" id="traceability-note">
-              Run `analyze_claim`, then `render_claim_workspace` to populate this traceable casualty analysis workspace.
-            </p>
-          </div>
-        </div>
-        <div class="badge-row">
-          <span class="badge status-new" id="status-badge">New</span>
-          <span class="badge band-low" id="severity-band-badge">Low</span>
-        </div>
-      </section>
+    <header class="ws-header">
+      <div class="header-brand">
+        <span class="brand-name">ECO-AI</span>
+        <span class="brand-tag">by ClaimGPT</span>
+      </div>
+      <div class="header-claim">
+        <span class="hdr-claim-id" id="hdr-id">—</span>
+        <span class="hdr-claim-type" id="hdr-type">Awaiting claim</span>
+      </div>
+      <div>
+        <span class="routing-pill r-pending" id="hdr-routing">
+          <span class="dot"></span><span id="hdr-routing-text">—</span>
+        </span>
+      </div>
+    </header>
 
-      <section class="stats">
-        <div class="stat">
-          <span class="stat-label">Claim Type</span>
-          <strong class="stat-value" id="claim-type">Pending</strong>
+    <div class="ws-body">
+      <aside class="sidebar">
+        <div class="sb-sec">
+          <div class="sb-label">Claim File</div>
+          <div class="sb-row"><span class="sb-key">Claim ID</span><span class="sb-val accent" id="sb-id">—</span></div>
+          <div class="sb-row"><span class="sb-key">Policy</span><span class="sb-val" id="sb-policy">—</span></div>
+          <div class="sb-row"><span class="sb-key">Holder</span><span class="sb-val" id="sb-holder">—</span></div>
+          <div class="sb-row"><span class="sb-key">Type</span><span class="sb-val" id="sb-ctype">—</span></div>
+          <div class="sb-row"><span class="sb-key">Date of Loss</span><span class="sb-val" id="sb-dol">—</span></div>
+          <div class="sb-row"><span class="sb-key">Policy Status</span><span class="sb-val" id="sb-pstatus">—</span></div>
+          <div class="sb-row"><span class="sb-key">Cycle Est.</span><span class="sb-val" id="sb-cycle">—</span></div>
         </div>
-        <div class="stat">
-          <span class="stat-label">Severity Score</span>
-          <strong class="stat-value" id="severity-score">0</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">TIP</span>
-          <strong class="stat-value" id="tip-amount">$0</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Litigation</span>
-          <strong class="stat-value" id="litigation-probability">0%</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Fraud Risk</span>
-          <strong class="stat-value" id="fraud-risk">0%</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Route</span>
-          <strong class="stat-value" id="route">Pending</strong>
-        </div>
-      </section>
-
-      <section class="grid">
-        <article class="panel">
-          <h2>Impact & Liability</h2>
-          <p class="copy" id="biomechanical-plausibility">
-            Biomechanical plausibility analysis will appear here.
-          </p>
-          <div class="panel-grid" style="margin-top: 12px;">
-            <div>
-              <h3>Liability View</h3>
-              <p class="copy" id="liability-assessment">Pending.</p>
+        <div class="sb-sec">
+          <div class="sb-label">Fraud Risk Score</div>
+          <div class="gauge-wrap">
+            <div class="gauge-scores">
+              <span class="gauge-score" id="sb-fscore">—</span>
+              <span class="gauge-band" id="sb-fband">—</span>
             </div>
-            <div>
-              <h3>Comparative Negligence</h3>
-              <p class="copy">
-                <strong id="comparative-negligence">0%</strong>
-              </p>
-              <p class="copy" id="subrogation-opportunity">Pending.</p>
+            <div class="gauge-track"><div class="gauge-fill" id="sb-gfill" style="width:0%"></div></div>
+          </div>
+          <div class="gauge-note">0 — 100 anomaly index</div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-label">Suggested Reserve</div>
+          <div class="reserve-amt" id="sb-reserve">—</div>
+          <div class="reserve-note">pending adjuster authorization</div>
+        </div>
+        <div class="sb-actions">
+          <button class="sb-btn primary" id="btn-demo">Run Demo Claim</button>
+          <button class="sb-btn ghost" id="btn-followup">Ask ECO-AI Next Steps</button>
+          <div class="sb-note">All actions require adjuster authorization</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">⚖</div>
+          <div class="empty-title">ECO-AI Adjuster Workspace</div>
+          <div class="empty-body">Ask ChatGPT to triage a claim — or run the demo to see a full FNOL analysis, fraud risk score, policy coverage review, and settlement workspace.</div>
+          <button class="empty-btn" id="btn-demo-empty">Run Demo Claim</button>
+        </div>
+
+        <div class="workspace" id="workspace" style="display:none">
+          <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="fnol">FNOL Triage</button>
+            <button class="tab-btn" data-tab="coverage">Policy Coverage</button>
+            <button class="tab-btn" data-tab="risk">Fraud Risk</button>
+            <button class="tab-btn" data-tab="settlement">Settlement</button>
+          </nav>
+          <div class="tab-panels">
+            <!-- FNOL -->
+            <div class="tab-panel active" id="tab-fnol">
+              <div class="summary-banner" id="fnol-summary"></div>
+              <div class="card-grid-3">
+                <div class="stat"><div class="stat-label">Routing</div><div class="stat-value" id="fnol-routing" style="font-size:13px">—</div></div>
+                <div class="stat"><div class="stat-label">Severity</div><div class="stat-value" id="fnol-severity" style="font-size:13px">—</div></div>
+                <div class="stat"><div class="stat-label">Cycle Estimate</div><div class="stat-value" id="fnol-cycle" style="font-size:12px">—</div></div>
+              </div>
+              <div class="card">
+                <div class="card-title">Recommended Actions</div>
+                <div class="action-list" id="fnol-actions"></div>
+              </div>
+              <div class="card">
+                <div class="card-title">Incident Timeline</div>
+                <div class="timeline" id="fnol-timeline"></div>
+              </div>
+            </div>
+            <!-- Coverage -->
+            <div class="tab-panel" id="tab-coverage">
+              <div class="card">
+                <div class="card-title">Coverage Summary</div>
+                <div class="card-grid" style="margin-bottom:14px">
+                  <div class="stat"><div class="stat-label">Carrier</div><div class="stat-value" id="cov-carrier" style="font-size:13px">—</div></div>
+                  <div class="stat"><div class="stat-label">Policy Period</div><div class="stat-value" id="cov-period" style="font-size:11px;padding-top:4px">—</div></div>
+                </div>
+                <table>
+                  <thead><tr><th>Coverage</th><th>Limit</th><th>Deductible</th><th>Applicable</th></tr></thead>
+                  <tbody id="cov-table"></tbody>
+                </table>
+              </div>
+              <div class="card-grid">
+                <div class="card"><div class="card-title">Endorsements</div><div class="tag-list" id="cov-end"></div></div>
+                <div class="card"><div class="card-title">Exclusions</div><div class="tag-list" id="cov-exc"></div></div>
+              </div>
+            </div>
+            <!-- Risk -->
+            <div class="tab-panel" id="tab-risk">
+              <div class="card">
+                <div class="card-title">Fraud Analytics Report</div>
+                <div class="card-grid" style="margin-bottom:14px">
+                  <div class="stat"><div class="stat-label">Risk Score</div><div class="stat-value" id="risk-score">—</div></div>
+                  <div class="stat"><div class="stat-label">Risk Band</div><div class="stat-value" id="risk-band" style="font-size:14px">—</div></div>
+                </div>
+                <div class="card-title" style="margin-bottom:10px">Anomaly Signals</div>
+                <div class="anomaly-list" id="risk-anomalies"></div>
+              </div>
+              <div class="card" id="risk-incons-card" style="display:none">
+                <div class="card-title">Data Inconsistencies</div>
+                <div class="anomaly-list" id="risk-incons"></div>
+              </div>
+              <div class="card">
+                <div class="card-title">SIU Recommendation</div>
+                <div id="risk-rec" style="font-size:13px;line-height:1.6"></div>
+              </div>
+            </div>
+            <!-- Settlement -->
+            <div class="tab-panel" id="tab-settlement">
+              <div class="card-grid">
+                <div class="card">
+                  <div class="card-title">Reserve Calculation</div>
+                  <div class="res-breakdown" id="sett-breakdown"></div>
+                </div>
+                <div class="card">
+                  <div class="card-title">Missing Documents</div>
+                  <div class="doc-list" id="sett-docs"></div>
+                </div>
+              </div>
+              <div class="card" id="sett-comm" style="display:none">
+                <div class="card-title">Draft Communication</div>
+                <div class="comm-draft">
+                  <div class="comm-subject" id="sett-comm-sub"></div>
+                  <div class="comm-body" id="sett-comm-body"></div>
+                  <div class="comm-warn">DRAFT — Adjuster review and authorization required before transmission.</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="citations" id="impact-citations"></div>
-        </article>
-
-        <article class="panel">
-          <h2>Reserve View</h2>
-          <p class="copy" id="tip-rationale">TIP rationale pending.</p>
-          <p class="copy" id="reserve-recommendation" style="margin-top: 10px;">
-            Reserve recommendation pending.
-          </p>
-          <ul>
-            <li id="tip-range">Range: $0 - $0</li>
-            <li id="tip-confidence">Confidence: 0%</li>
-            <li id="complexity-score">Complexity score: 0</li>
-            <li id="impact-score">Impact severity score: 0</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="panel-grid">
-        <article class="panel">
-          <h2>Medical Synthesis</h2>
-          <ul>
-            <li id="injury-overview">Initial injury overview pending.</li>
-            <li id="current-medical-status">Current medical status pending.</li>
-            <li id="future-treatment-trajectory">Future treatment trajectory pending.</li>
-          </ul>
-        </article>
-
-        <article class="panel">
-          <h2>Missing Information</h2>
-          <ul id="missing-information">
-            <li>No missing information flagged.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="panel">
-        <h2>Chronological Treatment Timeline</h2>
-        <div class="timeline" id="treatment-chronology">
-          <div class="timeline-item">No treatment chronology available yet.</div>
         </div>
-      </section>
 
-      <section class="panel-grid">
-        <article class="panel">
-          <h2>Anomalies & Red Flags</h2>
-          <div class="timeline" id="anomalies-list">
-            <div class="timeline-item">No red flags detected yet.</div>
-          </div>
-        </article>
-
-        <article class="panel">
-          <h2>Fraud & Network Review</h2>
-          <ul>
-            <li id="entity-resolution-summary">Entity-resolution summary pending.</li>
-            <li id="alternative-data-summary">Alternative-data review pending.</li>
-            <li id="forensics-summary">Forensics summary pending.</li>
-          </ul>
-          <div class="citations" id="fraud-review-citations"></div>
-        </article>
-      </section>
-
-      <section class="panel">
-        <h2>Adjuster Action Plan</h2>
-        <div class="plan-list" id="action-plan">
-          <div class="plan-item">No next-best actions generated yet.</div>
+        <div class="meta-bar">
+          <span id="meta-rt">Runtime: awaiting MCP Apps bridge</span>
+          <span id="meta-ts"></span>
         </div>
-      </section>
-
-      <section class="panel-grid">
-        <article class="panel">
-          <h2>ECO-AI Guardrails</h2>
-          <ul id="compliance-guardrails">
-            <li>No guardrails loaded yet.</li>
-          </ul>
-          <p class="copy" id="human-in-loop-notice" style="margin-top: 12px;">
-            Human-in-the-loop notice pending.
-          </p>
-        </article>
-
-        <article class="panel">
-          <h2>MCP Tool Map</h2>
-          <div class="timeline" id="mcp-tools">
-            <div class="timeline-item">No MCP tools loaded yet.</div>
-          </div>
-        </article>
-      </section>
-
-      <section class="panel-grid">
-        <article class="panel">
-          <h2>Workflow Stages</h2>
-          <div class="timeline" id="workflow-stages">
-            <div class="timeline-item">No workflow stages loaded yet.</div>
-          </div>
-        </article>
-
-        <article class="panel">
-          <h2>Integration Architecture</h2>
-          <ul id="integration-architecture">
-            <li>No integration architecture loaded yet.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="actions">
-        <button class="primary" id="sample-claim-button" type="button">
-          Run Sample Casualty Analysis
-        </button>
-        <button class="secondary" id="follow-up-button" type="button">
-          Ask ChatGPT For Adjuster Guidance
-        </button>
-      </section>
-
-      <p class="meta" id="meta">Runtime: waiting for MCP Apps bridge initialization.</p>
-    </main>
+      </main>
+    </div>
 
     <script type="module">
-      const el = {
-        headline: document.querySelector("#headline"),
-        subhead: document.querySelector("#subhead"),
-        traceabilityNote: document.querySelector("#traceability-note"),
-        claimType: document.querySelector("#claim-type"),
-        severityScore: document.querySelector("#severity-score"),
-        tipAmount: document.querySelector("#tip-amount"),
-        litigationProbability: document.querySelector("#litigation-probability"),
-        fraudRisk: document.querySelector("#fraud-risk"),
-        route: document.querySelector("#route"),
-        statusBadge: document.querySelector("#status-badge"),
-        severityBandBadge: document.querySelector("#severity-band-badge"),
-        biomechanicalPlausibility: document.querySelector("#biomechanical-plausibility"),
-        liabilityAssessment: document.querySelector("#liability-assessment"),
-        comparativeNegligence: document.querySelector("#comparative-negligence"),
-        subrogationOpportunity: document.querySelector("#subrogation-opportunity"),
-        impactCitations: document.querySelector("#impact-citations"),
-        tipRationale: document.querySelector("#tip-rationale"),
-        reserveRecommendation: document.querySelector("#reserve-recommendation"),
-        tipRange: document.querySelector("#tip-range"),
-        tipConfidence: document.querySelector("#tip-confidence"),
-        complexityScore: document.querySelector("#complexity-score"),
-        impactScore: document.querySelector("#impact-score"),
-        injuryOverview: document.querySelector("#injury-overview"),
-        currentMedicalStatus: document.querySelector("#current-medical-status"),
-        futureTreatmentTrajectory: document.querySelector("#future-treatment-trajectory"),
-        missingInformation: document.querySelector("#missing-information"),
-        treatmentChronology: document.querySelector("#treatment-chronology"),
-        anomaliesList: document.querySelector("#anomalies-list"),
-        entityResolutionSummary: document.querySelector("#entity-resolution-summary"),
-        alternativeDataSummary: document.querySelector("#alternative-data-summary"),
-        forensicsSummary: document.querySelector("#forensics-summary"),
-        fraudReviewCitations: document.querySelector("#fraud-review-citations"),
-        actionPlan: document.querySelector("#action-plan"),
-        complianceGuardrails: document.querySelector("#compliance-guardrails"),
-        humanInLoopNotice: document.querySelector("#human-in-loop-notice"),
-        mcpTools: document.querySelector("#mcp-tools"),
-        workflowStages: document.querySelector("#workflow-stages"),
-        integrationArchitecture: document.querySelector("#integration-architecture"),
-        sampleClaimButton: document.querySelector("#sample-claim-button"),
-        followUpButton: document.querySelector("#follow-up-button"),
-        meta: document.querySelector("#meta"),
-      };
-
+      const $ = id => document.getElementById(id);
       let toolOutput = null;
       let rpcId = 0;
-      const pendingRequests = new Map();
+      const pending = new Map();
 
-      const formatCurrency = (value) =>
-        new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          maximumFractionDigits: 0,
-        }).format(value ?? 0);
-
-      const setList = (container, items, emptyText) => {
-        container.innerHTML = "";
-        const source = items && items.length ? items : [emptyText];
-
-        source.forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          container.appendChild(li);
-        });
-      };
-
-      const renderCitations = (container, citations) => {
-        container.innerHTML = "";
-        const source = citations && citations.length ? citations : [];
-
-        source.forEach((item) => {
-          const div = document.createElement("div");
-          const location = [];
-          if (item.page) location.push("p." + item.page);
-          if (item.paragraph) location.push("para. " + item.paragraph);
-
-          div.className = "citation";
-          div.textContent =
-            item.label +
-            (location.length ? " (" + location.join(", ") + ")" : "") +
-            ": " +
-            item.excerpt;
-          container.appendChild(div);
-        });
-
-        if (!source.length) {
-          const div = document.createElement("div");
-          div.className = "citation";
-          div.textContent = "No supporting citations available yet.";
-          container.appendChild(div);
-        }
-      };
-
-      const renderChronology = (items) => {
-        el.treatmentChronology.innerHTML = "";
-        const source = items && items.length ? items : [];
-
-        source.forEach((item) => {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-
-          const heading = document.createElement("strong");
-          heading.textContent = item.date + " • " + item.provider;
-          article.appendChild(heading);
-
-          const detail = document.createElement("p");
-          detail.className = "copy";
-          detail.textContent = item.eventType + ": " + item.details;
-          article.appendChild(detail);
-
-          const meta = document.createElement("p");
-          meta.className = "meta";
-          const bits = [];
-          if (item.icdCodes?.length) bits.push("ICD: " + item.icdCodes.join(", "));
-          if (item.procedures?.length) bits.push("Procedures: " + item.procedures.join(", "));
-          if (item.prescriptions?.length) bits.push("Rx: " + item.prescriptions.join(", "));
-          meta.textContent = bits.length ? bits.join(" | ") : "No coded medical detail provided.";
-          article.appendChild(meta);
-
-          const citations = document.createElement("div");
-          citations.className = "citations";
-          renderCitations(citations, item.citations);
-          article.appendChild(citations);
-          el.treatmentChronology.appendChild(article);
-        });
-
-        if (!source.length) {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-          article.textContent = "No treatment chronology available yet.";
-          el.treatmentChronology.appendChild(article);
-        }
-      };
-
-      const renderAnomalies = (items) => {
-        el.anomaliesList.innerHTML = "";
-        const source = items && items.length ? items : [];
-
-        source.forEach((item) => {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-
-          const heading = document.createElement("strong");
-          heading.textContent =
-            item.title + " • " + item.category.replaceAll("_", " ") + " • " + item.severity;
-          article.appendChild(heading);
-
-          const detail = document.createElement("p");
-          detail.className = "copy";
-          detail.textContent = item.details;
-          article.appendChild(detail);
-
-          const citations = document.createElement("div");
-          citations.className = "citations";
-          renderCitations(citations, item.citations);
-          article.appendChild(citations);
-          el.anomaliesList.appendChild(article);
-        });
-
-        if (!source.length) {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-          article.textContent = "No red flags detected yet.";
-          el.anomaliesList.appendChild(article);
-        }
-      };
-
-      const renderActionPlan = (items) => {
-        el.actionPlan.innerHTML = "";
-        const source = items && items.length ? items : [];
-
-        source.forEach((item) => {
-          const article = document.createElement("article");
-          article.className = "plan-item";
-
-          const heading = document.createElement("strong");
-          heading.textContent = "Priority " + item.priority + ": " + item.action;
-          article.appendChild(heading);
-
-          const detail = document.createElement("p");
-          detail.className = "copy";
-          detail.textContent = item.rationale;
-          article.appendChild(detail);
-
-          const citations = document.createElement("div");
-          citations.className = "citations";
-          renderCitations(citations, item.citations);
-          article.appendChild(citations);
-          el.actionPlan.appendChild(article);
-        });
-
-        if (!source.length) {
-          const article = document.createElement("article");
-          article.className = "plan-item";
-          article.textContent = "No next-best actions generated yet.";
-          el.actionPlan.appendChild(article);
-        }
-      };
-
-      const renderToolCards = (items) => {
-        el.mcpTools.innerHTML = "";
-        const source = items && items.length ? items : [];
-
-        source.forEach((item) => {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-
-          const heading = document.createElement("strong");
-          heading.textContent = item.name + " • " + item.mode.replaceAll("_", " ");
-          article.appendChild(heading);
-
-          const detail = document.createElement("p");
-          detail.className = "copy";
-          detail.textContent = item.system + " — " + item.purpose;
-          article.appendChild(detail);
-          el.mcpTools.appendChild(article);
-        });
-
-        if (!source.length) {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-          article.textContent = "No MCP tools loaded yet.";
-          el.mcpTools.appendChild(article);
-        }
-      };
-
-      const renderWorkflowStages = (items) => {
-        el.workflowStages.innerHTML = "";
-        const source = items && items.length ? items : [];
-
-        source.forEach((item) => {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-
-          const heading = document.createElement("strong");
-          heading.textContent = item.stage;
-          article.appendChild(heading);
-
-          const objective = document.createElement("p");
-          objective.className = "copy";
-          objective.textContent = item.objective;
-          article.appendChild(objective);
-
-          const list = document.createElement("ul");
-          item.steps.forEach((step) => {
-            const li = document.createElement("li");
-            li.textContent = step;
-            list.appendChild(li);
-          });
-          article.appendChild(list);
-          el.workflowStages.appendChild(article);
-        });
-
-        if (!source.length) {
-          const article = document.createElement("article");
-          article.className = "timeline-item";
-          article.textContent = "No workflow stages loaded yet.";
-          el.workflowStages.appendChild(article);
-        }
-      };
-
-      const render = () => {
-        const output = toolOutput ?? {};
-        const executive = output.executiveStatus ?? {};
-        const tip = executive.totalIncurredPrediction ?? {};
-        const liability = output.impactLiability ?? {};
-        const medical = output.medicalSynthesis ?? {};
-        const fraudReview = output.fraudReview ?? {};
-        const orchestration = output.enterpriseOrchestration ?? {};
-
-        el.headline.textContent = output.headline ?? "ClaimGPT OCCIE Workspace";
-        el.subhead.textContent =
-          output.subhead ?? "Casualty claims intelligence for triage, reserving, and red-flag review";
-        el.traceabilityNote.textContent =
-          output.traceabilityNote ??
-          "Run analyze_claim, then render_claim_workspace to populate this traceable casualty analysis workspace.";
-
-        el.claimType.textContent = output.claimType ? output.claimType.replaceAll("_", " ") : "Pending";
-        el.severityScore.textContent = executive.severityScore ?? 0;
-        el.tipAmount.textContent = formatCurrency(tip.amount ?? 0);
-        el.litigationProbability.textContent = (executive.litigationProbability ?? 0) + "%";
-        el.fraudRisk.textContent = (executive.fraudRisk ?? 0) + "%";
-        el.route.textContent = executive.route ?? "Pending";
-
-        const status = executive.status ?? "new";
-        const band = executive.severityBand ?? "low";
-        el.statusBadge.textContent = status.replaceAll("-", " ");
-        el.statusBadge.className = "badge status-" + status;
-        el.severityBandBadge.textContent = band;
-        el.severityBandBadge.className = "badge band-" + band;
-
-        el.biomechanicalPlausibility.textContent =
-          liability.biomechanicalPlausibility ?? "Biomechanical plausibility analysis will appear here.";
-        el.liabilityAssessment.textContent = liability.liabilityAssessment ?? "Pending.";
-        el.comparativeNegligence.textContent = (liability.comparativeNegligencePercent ?? 0) + "%";
-        el.subrogationOpportunity.textContent = liability.subrogationOpportunity ?? "Pending.";
-        renderCitations(el.impactCitations, liability.citations);
-
-        el.tipRationale.textContent = tip.rationale ?? "TIP rationale pending.";
-        el.reserveRecommendation.textContent =
-          executive.reserveRecommendation ?? "Reserve recommendation pending.";
-        el.tipRange.textContent =
-          "Range: " + formatCurrency(tip.low ?? 0) + " - " + formatCurrency(tip.high ?? 0);
-        el.tipConfidence.textContent =
-          "Confidence: " + Math.round((tip.confidence ?? 0) * 100) + "%";
-        el.complexityScore.textContent =
-          "Complexity score: " + (executive.complexityScore ?? 0);
-        el.impactScore.textContent =
-          "Impact severity score: " + (liability.impactSeverityScore ?? 0);
-
-        el.injuryOverview.textContent =
-          medical.initialInjuryOverview ?? "Initial injury overview pending.";
-        el.currentMedicalStatus.textContent =
-          medical.currentMedicalStatus ?? "Current medical status pending.";
-        el.futureTreatmentTrajectory.textContent =
-          medical.futureTreatmentTrajectory ?? "Future treatment trajectory pending.";
-
-        setList(el.missingInformation, output.missingInformation, "No missing information flagged.");
-        renderChronology(medical.chronology);
-        renderAnomalies(output.anomaliesAndRedFlags);
-        el.entityResolutionSummary.textContent =
-          fraudReview.entityResolutionSummary ?? "Entity-resolution summary pending.";
-        el.alternativeDataSummary.textContent =
-          fraudReview.alternativeDataSummary ?? "Alternative-data review pending.";
-        el.forensicsSummary.textContent =
-          fraudReview.forensicsSummary ?? "Forensics summary pending.";
-        renderCitations(el.fraudReviewCitations, fraudReview.citations);
-        renderActionPlan(output.adjusterActionPlan);
-        setList(el.complianceGuardrails, orchestration.complianceGuardrails, "No guardrails loaded yet.");
-        el.humanInLoopNotice.textContent =
-          orchestration.humanInLoopNotice ?? "Human-in-the-loop notice pending.";
-        renderToolCards(orchestration.mcpTools);
-        renderWorkflowStages(orchestration.workflowStages);
-        setList(
-          el.integrationArchitecture,
-          orchestration.integrationArchitecture,
-          "No integration architecture loaded yet."
-        );
-
-        const theme = window.openai?.theme ?? "bridge-only";
-        el.meta.textContent =
-          "Runtime: " +
-          (window.openai ? "MCP Apps bridge + optional window.openai" : "MCP Apps bridge only") +
-          " | Theme: " +
-          theme;
-      };
-
-      const rpcNotify = (method, params) => {
+      const rpcNotify = (method, params) =>
         window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
-      };
 
       const rpcRequest = (method, params) =>
-        new Promise((resolve, reject) => {
+        new Promise((res, rej) => {
           const id = ++rpcId;
-          pendingRequests.set(id, { resolve, reject });
+          pending.set(id, { resolve: res, reject: rej });
           window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
         });
 
-      window.addEventListener(
-        "message",
-        (event) => {
-          if (event.source !== window.parent) return;
+      window.addEventListener("message", ev => {
+        if (ev.source !== window.parent) return;
+        const msg = ev.data;
+        if (!msg || msg.jsonrpc !== "2.0") return;
+        if (typeof msg.id === "number") {
+          const p = pending.get(msg.id);
+          if (!p) return;
+          pending.delete(msg.id);
+          msg.error ? p.reject(msg.error) : p.resolve(msg.result);
+          return;
+        }
+        if (msg.method === "ui/notifications/tool-result") {
+          toolOutput = msg.params?.structuredContent ?? null;
+          render();
+        }
+      }, { passive: true });
 
-          const message = event.data;
-          if (!message || message.jsonrpc !== "2.0") return;
-
-          if (typeof message.id === "number") {
-            const pending = pendingRequests.get(message.id);
-            if (!pending) return;
-
-            pendingRequests.delete(message.id);
-            if (message.error) {
-              pending.reject(message.error);
-              return;
-            }
-
-            pending.resolve(message.result);
-            return;
-          }
-
-          if (message.method === "ui/notifications/tool-result") {
-            toolOutput = message.params?.structuredContent ?? null;
-            render();
-          }
-        },
-        { passive: true }
-      );
-
-      const initializeBridge = async () => {
+      const bridgeReady = (async () => {
         await rpcRequest("ui/initialize", {
-          appInfo: { name: "claimgpt-widget", version: "0.2.0" },
+          appInfo: { name: "eco-ai-widget", version: "1.0.0" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
         rpcNotify("ui/notifications/initialized", {});
-      };
+      })();
 
-      const bridgeReady = initializeBridge();
-
-      el.sampleClaimButton.addEventListener("click", async () => {
-        await bridgeReady;
-
-        const analysis = await rpcRequest("tools/call", {
-          name: "analyze_claim",
-          arguments: {
-            claimType: "bodily_injury",
-            narrative:
-              "Rear-end loss on 2026-06-14. Claimant reports neck and lumbar pain after ambulance transport from the scene. The claimant is requesting an urgent payout, says the story changed after talking with family, and has missed work since the collision.",
-            evidenceCount: 4,
-            claimantAge: 47,
-            priorConditions: ["prior cervical strain"],
-            jurisdiction: "California",
-            telematicsSummary:
-              "Rear-end impact with airbag non-deployment, moderate rear intrusion, vehicle towed from scene.",
-            imageObservations: [
-              "Rear bumper crushed with trunk intrusion",
-              "No visible front-end claimant vehicle damage",
-            ],
-            policeReportSummary:
-              "Officer notes both drivers claim the light was yellow and recommends shared-fault evaluation pending witness contact.",
-            medicalRecords: [
-              {
-                sourceId: "er-1",
-                provider: "Mercy ER",
-                noteDate: "2026-06-14",
-                summary:
-                  "ER evaluation documented cervical strain, lumbar pain, and transport from the collision scene.",
-                icdCodes: ["S13.4XXA", "M54.50"],
-                prescriptions: ["Cyclobenzaprine", "Ibuprofen"],
-                procedures: ["ER evaluation"],
-                page: 3,
-                paragraph: 2,
-              },
-              {
-                sourceId: "pt-1",
-                provider: "Downtown PT",
-                noteDate: "2026-06-20",
-                summary:
-                  "Physical therapy intake reports reduced range of motion and ongoing work limitations.",
-                icdCodes: ["M54.2", "M54.50"],
-                prescriptions: [],
-                procedures: ["Physical therapy evaluation"],
-                page: 1,
-                paragraph: 4,
-              },
-            ],
-            bills: [
-              {
-                sourceId: "bill-1",
-                provider: "Mercy ER",
-                amount: 6400,
-                description: "Emergency evaluation and imaging",
-                page: 1,
-                paragraph: 1,
-              },
-              {
-                sourceId: "bill-2",
-                provider: "Downtown PT",
-                amount: 1850,
-                description: "Initial PT evaluation package",
-                page: 1,
-                paragraph: 2,
-              },
-            ],
-            communications: [
-              {
-                sourceId: "comm-1",
-                authorRole: "claimant",
-                date: "2026-06-18",
-                summary:
-                  "Claimant asked for urgent payout and said the family helped rewrite parts of the story.",
-                page: 1,
-                paragraph: 1,
-              },
-            ],
-          },
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+          btn.classList.add("active");
+          $("tab-" + btn.dataset.tab).classList.add("active");
         });
-
-        const rendered = await rpcRequest("tools/call", {
-          name: "render_claim_workspace",
-          arguments: analysis.structuredContent,
-        });
-
-        toolOutput = rendered?.structuredContent ?? toolOutput;
-        render();
       });
 
-      el.followUpButton.addEventListener("click", async () => {
-        await bridgeReady;
+      const usd = n => n != null ? "$" + Number(n).toLocaleString() : "—";
+      const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "—";
 
-        const prompt = toolOutput?.claimType
-          ? "Use the current ClaimGPT OCCIE workspace to explain the top adjuster priorities, reserve posture, and contradiction risks for this claim."
-          : "Explain how ClaimGPT OCCIE should be used for a casualty claim review.";
+      function pillClass(s) {
+        if (s === "high" || s === "critical") return "p-high";
+        if (s === "moderate") return "p-mod";
+        return "p-low";
+      }
 
-        rpcNotify("ui/message", {
-          role: "user",
-          content: [{ type: "text", text: prompt }],
+      function render() {
+        const d = toolOutput ?? {};
+
+        // Header
+        $("hdr-id").textContent = d.claimId ?? "—";
+        $("hdr-type").textContent = d.claimType ?? "Awaiting claim";
+        const rPill = $("hdr-routing");
+        if (d.routing === "FAST_TRACK") {
+          rPill.className = "routing-pill r-fast";
+          $("hdr-routing-text").textContent = "FAST TRACK";
+        } else if (d.routing === "COMPLEX_ADJUDICATION") {
+          rPill.className = "routing-pill r-complex";
+          $("hdr-routing-text").textContent = "COMPLEX ADJ.";
+        } else {
+          rPill.className = "routing-pill r-pending";
+          $("hdr-routing-text").textContent = "—";
+        }
+
+        // Sidebar
+        $("sb-id").textContent = d.claimId ?? "—";
+        $("sb-policy").textContent = d.policyNumber ?? "—";
+        $("sb-holder").textContent = d.holderName ?? "—";
+        $("sb-ctype").textContent = d.claimType ?? "—";
+        $("sb-dol").textContent = d.dateOfLoss ?? "—";
+        const psEl = $("sb-pstatus");
+        psEl.textContent = cap(d.policyStatus ?? "—");
+        psEl.className = "sb-val " + (d.policyStatus === "active" ? "active-status" : d.policyStatus ? "lapsed-status" : "");
+        $("sb-cycle").textContent = d.estimatedCycleTime ?? "—";
+
+        const score = d.fraudRiskScore ?? 0;
+        const band = d.fraudRiskBand ?? "low";
+        $("sb-fscore").textContent = d.fraudRiskScore != null ? String(score) : "—";
+        const bEl = $("sb-fband");
+        bEl.textContent = band.toUpperCase();
+        bEl.className = "gauge-band " + (score >= 70 ? "b-high" : score >= 44 ? "b-mod" : "b-low");
+        const fill = $("sb-gfill");
+        fill.style.width = score + "%";
+        fill.className = "gauge-fill " + (score >= 70 ? "g-high" : score >= 44 ? "g-mod" : "g-low");
+
+        $("sb-reserve").textContent = d.suggestedReserve != null ? usd(d.suggestedReserve) : "—";
+
+        if (!d.claimId) return;
+        $("empty-state").style.display = "none";
+        $("workspace").style.display = "flex";
+
+        // FNOL tab
+        $("fnol-summary").textContent = d.summary ?? "";
+        $("fnol-routing").innerHTML = d.routing
+          ? `<span class="pill ${pillClass(d.routing === "FAST_TRACK" ? "low" : "high")}">${d.routing.replace("_", " ")}</span>` : "—";
+        $("fnol-severity").innerHTML = d.severity
+          ? `<span class="pill ${pillClass(d.severity)}">${cap(d.severity)}</span>` : "—";
+        $("fnol-cycle").textContent = d.estimatedCycleTime ?? "—";
+
+        const aEl = $("fnol-actions");
+        aEl.innerHTML = "";
+        (d.recommendedActions ?? []).forEach((a, i) => {
+          aEl.insertAdjacentHTML("beforeend",
+            `<div class="action-item"><span class="action-num">${i + 1}.</span><span>${a}</span></div>`);
         });
+
+        const tlEl = $("fnol-timeline");
+        tlEl.innerHTML = "";
+        (d.timeline ?? []).forEach(e => {
+          tlEl.insertAdjacentHTML("beforeend",
+            `<div class="tl-row">
+              <span class="tl-date">${e.date ?? ""}</span>
+              <span class="tl-event ${e.significance === "high" ? "tl-high" : ""}">${e.event ?? ""}</span>
+              <span class="tl-src">${e.source ?? ""}</span>
+            </div>`);
+        });
+
+        // Coverage tab
+        $("cov-carrier").textContent = d.carrier ?? "—";
+        $("cov-period").textContent = d.effectiveDate && d.expirationDate
+          ? `${d.effectiveDate} → ${d.expirationDate}` : "—";
+        const covTbl = $("cov-table");
+        covTbl.innerHTML = "";
+        (d.coverages ?? []).forEach(c => {
+          covTbl.insertAdjacentHTML("beforeend",
+            `<tr>
+              <td>${c.type}</td>
+              <td class="mono">${usd(c.limit)}</td>
+              <td class="mono">${c.deductible ? usd(c.deductible) : "—"}</td>
+              <td class="${c.applicable ? "cov-yes" : "cov-no"}">${c.applicable ? "✓ Yes" : "No"}</td>
+            </tr>`);
+        });
+        const endEl = $("cov-end");
+        endEl.innerHTML = "";
+        (d.endorsements ?? ["None listed"]).forEach(e =>
+          endEl.insertAdjacentHTML("beforeend", `<span class="tag">${e}</span>`));
+        const excEl = $("cov-exc");
+        excEl.innerHTML = "";
+        (d.exclusions ?? ["None listed"]).forEach(e =>
+          excEl.insertAdjacentHTML("beforeend", `<span class="tag">${e}</span>`));
+
+        // Risk tab
+        $("risk-score").innerHTML = d.fraudRiskScore != null
+          ? `${d.fraudRiskScore}<span style="font-size:13px;font-weight:400;color:var(--muted)">/100</span>` : "—";
+        $("risk-band").innerHTML = d.fraudRiskBand
+          ? `<span class="pill ${pillClass(d.fraudRiskBand)}">${d.fraudRiskBand.toUpperCase()}</span>` : "—";
+
+        const anomEl = $("risk-anomalies");
+        anomEl.innerHTML = "";
+        if (d.fraudAnomalies?.length) {
+          d.fraudAnomalies.forEach(a => {
+            anomEl.insertAdjacentHTML("beforeend",
+              `<div class="anomaly ${a.severity}">
+                <span class="pill ${pillClass(a.severity)}" style="align-self:start">${a.severity.toUpperCase()}</span>
+                <div><div class="anom-signal">${a.signal}</div><div class="anom-detail">${a.detail}</div></div>
+              </div>`);
+          });
+        } else {
+          anomEl.innerHTML = `<div style="color:var(--muted);font-size:13px">No anomaly signals detected.</div>`;
+        }
+
+        const inconsCard = $("risk-incons-card");
+        if (d.dataInconsistencies?.length) {
+          inconsCard.style.display = "";
+          const icEl = $("risk-incons");
+          icEl.innerHTML = "";
+          d.dataInconsistencies.forEach(s =>
+            icEl.insertAdjacentHTML("beforeend",
+              `<div class="anomaly high">
+                <span class="pill p-high" style="align-self:start">FLAG</span>
+                <div><div class="anom-detail">${s}</div></div>
+              </div>`));
+        } else {
+          inconsCard.style.display = "none";
+        }
+
+        $("risk-rec").textContent =
+          band === "high" || band === "critical"
+            ? "Refer to Special Investigations Unit (SIU) before proceeding. Do not issue payment until SIU clearance is obtained."
+            : band === "moderate"
+              ? "Conduct enhanced documentation review. Verify repair estimate with preferred network vendor."
+              : "Standard triage protocols apply. No SIU referral required at this time.";
+
+        // Settlement tab
+        const bdEl = $("sett-breakdown");
+        bdEl.innerHTML = "";
+        const reserve = d.suggestedReserve ?? 0;
+        const ded = d.deductibleAmount ?? 0;
+        const net = d.netRecommendedPayout ?? Math.max(0, reserve - ded);
+        bdEl.insertAdjacentHTML("beforeend",
+          `<div class="res-row"><span class="res-label">Estimated Loss Amount</span><span class="res-val">${usd(reserve)}</span></div>
+           <div class="res-row"><span class="res-label">Applied Deductible</span><span class="res-val">(${usd(ded)})</span></div>
+           <div class="res-row"><span class="res-label">Net Recommended Payout</span><span class="res-val">${usd(net)}</span></div>`);
+
+        const docsEl = $("sett-docs");
+        docsEl.innerHTML = "";
+        if (d.missingDocuments?.length) {
+          d.missingDocuments.forEach(doc => {
+            docsEl.insertAdjacentHTML("beforeend",
+              `<div class="doc-item">
+                <div class="doc-icon ${doc.required ? "req" : "opt"}">${doc.required ? "!" : "?"}</div>
+                <div>
+                  <div class="doc-name">${doc.name}</div>
+                  <div class="doc-meta">From: ${doc.requestedFrom} · ${doc.required ? "Required" : "Recommended"}</div>
+                </div>
+              </div>`);
+          });
+        } else {
+          docsEl.innerHTML = `<div style="color:var(--low-c);font-size:13px;padding:6px 0">✓ All documentation received.</div>`;
+        }
+
+        const commCard = $("sett-comm");
+        if (d.draftCommunicationSubject) {
+          commCard.style.display = "";
+          $("sett-comm-sub").textContent = d.draftCommunicationSubject;
+          $("sett-comm-body").textContent = d.draftCommunicationBody ?? "";
+        } else {
+          commCard.style.display = "none";
+        }
+
+        $("meta-rt").textContent = window.openai ? "Runtime: MCP Apps bridge + window.openai" : "Runtime: MCP Apps bridge";
+        $("meta-ts").textContent = d.lastUpdated ? "Updated: " + new Date(d.lastUpdated).toLocaleTimeString() : "";
+      }
+
+      async function runDemo() {
+        await bridgeReady;
+        const fnol = await rpcRequest("tools/call", {
+          name: "run_fnol_triage",
+          arguments: {
+            claimId: "CLM-2026-081234",
+            policyNumber: "POL-2024-456789",
+            claimType: "Property — Water Damage",
+            narrative: "Water leak discovered in kitchen on return from vacation. Ceiling panels collapsed, lower cabinets saturated. Licensed plumber identified burst supply line inside wall. Mitigation started; plumber invoice and photographs not yet provided. Homeowner estimates $28,500 in damage.",
+            evidenceCount: 1,
+          },
+        });
+        const pol = await rpcRequest("tools/call", {
+          name: "query_policy_system",
+          arguments: { policyNumber: "POL-2024-456789", claimId: "CLM-2026-081234" },
+        });
+        const fraud = await rpcRequest("tools/call", {
+          name: "run_fraud_analytics",
+          arguments: {
+            claimId: "CLM-2026-081234",
+            claimType: "Property — Water Damage",
+            narrative: "Water leak after vacation. Burst supply line. No photos yet.",
+          },
+        });
+        const ws = await rpcRequest("tools/call", {
+          name: "render_adjuster_workspace",
+          arguments: {
+            claimId: fnol.structuredContent.claimId,
+            policyNumber: fnol.structuredContent.policyNumber,
+            holderName: pol.structuredContent.holderName,
+            claimType: fnol.structuredContent.claimType,
+            dateOfLoss: fnol.structuredContent.timeline?.[0]?.date,
+            routing: fnol.structuredContent.routing,
+            severity: fnol.structuredContent.severity,
+            currentStatus: "fnol",
+            summary: fnol.structuredContent.summary,
+            timeline: fnol.structuredContent.timeline,
+            recommendedActions: fnol.structuredContent.recommendedActions,
+            estimatedCycleTime: fnol.structuredContent.estimatedCycleTime,
+            policyStatus: pol.structuredContent.status,
+            carrier: pol.structuredContent.carrier,
+            effectiveDate: pol.structuredContent.effectiveDate,
+            expirationDate: pol.structuredContent.expirationDate,
+            coverages: pol.structuredContent.coverages,
+            endorsements: pol.structuredContent.endorsements,
+            exclusions: pol.structuredContent.exclusions,
+            fraudRiskScore: fraud.structuredContent.riskScore,
+            fraudRiskBand: fraud.structuredContent.riskBand,
+            fraudAnomalies: fraud.structuredContent.anomalies,
+            dataInconsistencies: fraud.structuredContent.dataInconsistencies,
+            priorClaimsCount: pol.structuredContent.priorClaimsCount,
+            suggestedReserve: fnol.structuredContent.suggestedReserve,
+            deductibleAmount: pol.structuredContent.coverages?.[0]?.deductible ?? 1500,
+            missingDocuments: fnol.structuredContent.missingDocuments,
+          },
+        });
+        toolOutput = ws?.structuredContent ?? toolOutput;
+        render();
+      }
+
+      $("btn-demo").addEventListener("click", runDemo);
+      $("btn-demo-empty").addEventListener("click", runDemo);
+      $("btn-followup").addEventListener("click", async () => {
+        await bridgeReady;
+        const prompt = toolOutput?.claimId
+          ? `Based on the ECO-AI workspace for ${toolOutput.claimType} claim ${toolOutput.claimId}, what are the recommended next adjuster actions? Routing: ${toolOutput.routing}. Fraud risk: ${toolOutput.fraudRiskBand?.toUpperCase()}.`
+          : "Explain how ECO-AI should be used during insurance claim intake and FNOL triage.";
+        rpcNotify("ui/message", { role: "user", content: [{ type: "text", text: prompt }] });
       });
 
       render();
